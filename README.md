@@ -1,12 +1,31 @@
-# Getting Started with Create React App
+# pixpel-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a [React](https://reactjs.org/) project bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Table of Contents
+- [pixpel-frontend](#pixpel-frontend)
+    * [🧶 Installation](#-installation)
+    * [⚛ Development](#-development)
+    * [📦 Build](#-development)
+    * [🚀 Run](#-run)
+    * [🧰 Configs](#-configs)
+      * [Configs/main](#configsmain)
+      * [Configs/api](#configsapi)
+      * [Configs/contractsInfo](#configscontractsinfo)
+      * [Configs/tokenList](#configstokenlist)
 
-In the project directory, you can run:
+## 🧶 Installation
 
-### `npm start`
+First it's necessary to install packages:
+
+```bash
+yarn install
+```
+
+## ⚛ Development
+```bash
+yarn start
+```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -14,57 +33,96 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+## 📦 Build
+```bash
+yarn build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Builds the app for production to the build folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.\
+The build is minified and the filenames include the hashes:
 
-### `npm run build`
+## 🚀 Run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To run project locally:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+yarn serve
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Builds the app for production to the `build` folder and runs the app on local server.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🧰 Configs
+Configs placed in folder [src/config](src/config)
+### Configs/main
+Main config is placed in file [src/config/main.js](src/config/main.js):
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| variable                	| description                                         	| default value                     	|
+|-------------------------	|-----------------------------------------------------	|-----------------------------------	|
+| PIXPEL_CONTRACT_ADDRESS 	| Contract address                                    	| {"index":'3879n',"subindex":'0n'} 	|
+| MAX_ENERGY              	| Max energy allow for transaction                    	| 30000n                            	|
+| MAX_CCD_DELTA           	| For calculating max CCD amount, considering fee etc 	| 120                               	|
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Configs/api
+API config is placed in file [src/config/api.js](src/config/api.js):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| variable                	| description                                                    	| default value                                               	|
+|-------------------------	|----------------------------------------------------------------	|-------------------------------------------------------------	|
+| JS_NODE_URL             	| Node url for getting graph data                                	| https://concordium-servernode.dev-site.space                	|
+| JSON_RPC_URL            	| Json RPC url for invokeContract methods                        	| https://json-rpc-proxy-0.dev-site.space                     	|
+| NETWORK                 	| Concordium network name, used for generating link to dashboard 	| testnet                                                     	|
+| PIXPEL_CONTRACT_METHODS 	| List of Pixpel contract methods names                          	| *List of 10 contract methods*                               	|
+| CIS2_CONTRACT_METHODS   	| List of CIS2 contract methods names                            	| {"updateOperator":"updateOperator","balanceOf":"balanceOf"} 	|
 
-## Learn More
+### Configs/contractsInfo
+Contracts info config is placed if file [src/config/contractsInfo.js](src/config/contractsInfo.js):
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| variable                  	| description                                            	|
+|---------------------------	|--------------------------------------------------------	|
+| MULTI_CONTRACT_MODULE_REF 	| CIS2 multi module reference                            	|
+| MULTI_CONTRACT_SCHEMA     	| CIS2 multi contract schema (hex)                       	|
+| CIS2_MULTI_CONTRACT_INFO  	| CIS2 multi contract info (contractName, schemaBuffer)  	|
+| PIXPEL_SWAP_SCHEMA        	| Pixpel Swap contract schema (hex)                      	|
+| PIXPEL_SWAP_CONTRACT_INFO 	| Pixpel Swap contract info (contractName, schemaBuffer) 	|
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Configs/tokenList
+Predefined token list is placed in file [src/config/tokenList.js](src/config/tokenList.js)
+It`s an array of objects with token data  
+Example:
+```js
+export const TOKEN_LIST = [
+  {
+    id: 1,
+    title: "CCD",
+    url: "/assets/images/tokens/ccd.png",
+    decimals: CCD_DECIMALS,
+  },
+  {
+    id: 2,
+    title: "TKN1",
+    url: "/assets/images/tokens/pixp.png",
+    address: {
+      index: 3677,
+      subindex: 0,
+    },
+    tokenId: "00",
+    decimals: 6,
+  },
+  {
+    id: 3,
+    title: "TKN2",
+    url: "/assets/images/tokens/pixp.png",
+    address: {
+      index: 3678,
+      subindex: 0,
+    },
+    tokenId: "00",
+    decimals: 6,
+    style: {
+      filter: "hue-rotate(180deg)",
+    },
+  },
+]
+```

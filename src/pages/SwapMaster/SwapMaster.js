@@ -6,9 +6,6 @@ import Swap from "./Swap/Swap";
 import Link from "../../components/Link/Link";
 import Liquidity from "./Liquidity/Liquidity";
 
-// Hooks
-import { useExchangesData } from "./Liquidity/hooks";
-
 // Actions
 import { setLiquidityActiveWindow } from "../../store/reducers/SwapMaster/liquiditySlice";
 
@@ -33,8 +30,6 @@ const buttonList = [
 const SwapMaster = () => {
   const params = useParams();
   const dispatch = useDispatch();
-
-  useExchangesData();
 
   const handleClickArrow = () => {
     dispatch(setLiquidityActiveWindow(LIQUIDITY_WINDOWS.pools));

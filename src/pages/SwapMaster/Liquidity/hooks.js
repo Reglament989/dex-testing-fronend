@@ -30,17 +30,6 @@ export const useLiquidityDataUpdate = () => {
   }, [dispatch]);
 };
 
-export const useExchangesData = () => {
-  const dispatch = useDispatch();
-  const isConnected = useSelector(s => !!s.connect.account);
-
-  useEffect(() => {
-    dispatch(getExchanges());
-  }, [dispatch, isConnected]);
-
-  return {};
-};
-
 export const useSwapInputsHandlers = ({
   isUnstakeMode,
   isFilledPool,

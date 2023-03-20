@@ -14,16 +14,12 @@ const liquiditySlice = createSlice({
     setExchanges: (state, action) => {
       state.exchanges = action.payload;
     },
-    clearExchanges: state => {
-      state.exchanges = initialState.exchanges;
-      state.isNoFilledPools = initialState.isNoFilledPools;
-    },
     setIsNoFilledPools: (state, action) => {
       state.isNoFilledPools = action.payload;
     },
   },
 });
 
-export const { setExchanges, clearExchanges, setIsNoFilledPools } = liquiditySlice.actions;
+export const { setExchanges, setIsNoFilledPools } = liquiditySlice.actions;
 
 export default liquiditySlice.reducer;

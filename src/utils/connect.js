@@ -1,5 +1,8 @@
 import { detectConcordiumProvider } from "@concordium/browser-wallet-api-helpers";
 
+// Utils
+import { getExchanges } from "../pages/SwapMaster/utils";
+
 // Actions
 import { clearConnectState, setAccount, setProvider } from "../store/reducers/connectSlice";
 import { clearSwapState } from "../store/reducers/SwapMaster/swapSlice";
@@ -9,6 +12,7 @@ export const handleDisconnect = () => dispatch => {
   dispatch(clearConnectState());
   dispatch(clearSwapState());
   dispatch(clearLiquidityState());
+  dispatch(getExchanges());
 };
 
 export const handleConnect = () => dispatch => {
@@ -24,6 +28,9 @@ export const handleConnect = () => dispatch => {
         .catch(error => {
           console.error(error);
           alert("Please allow wallet connection");
+        })
+        .finally(() => {
+          dispatch(getExchanges());
         });
 
       provider.removeAllListeners();
@@ -43,5 +50,6 @@ export const handleConnect = () => dispatch => {
     .catch(() => {
       console.error(`could not find provider`);
       alert("Please download Concordium Wallet");
+      dispatch(getExchanges());
     });
 };
