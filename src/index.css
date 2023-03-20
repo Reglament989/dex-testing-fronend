@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  color: white;
+}
+
+hr {
+  border-top:4px dashed rgb(4, 0, 255);
+  }
+
+  textarea {
+    resize: none;
+  }
