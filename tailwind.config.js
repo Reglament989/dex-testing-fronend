@@ -124,5 +124,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss"), require("autoprefixer"), require("tailwindcss-text-fill")],
 };

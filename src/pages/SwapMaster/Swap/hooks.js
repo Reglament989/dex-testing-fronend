@@ -6,27 +6,33 @@ import { useFormContext } from "react-hook-form";
 import { getAmount, getFromPerToAmount, getSwapBalances, getToPerFromAmount } from "./utils";
 import { parseTokenAddress } from "../../../utils/format";
 import { setSwapTokens } from "../../../store/reducers/SwapMaster/swapSlice";
+import { isSameToken } from "../utils";
 
 // Constants
 import { SWAP_FORM_FIELDS } from "./constants";
 
 export const useSwapDataUpdate = () => {
   const dispatch = useDispatch();
-  const { setValue, watch, getValues, trigger } = useFormContext();
+  const {
+    setValue,
+    watch,
+    getValues,
+    trigger,
+    formState: { touchedFields },
+  } = useFormContext();
 
   const isAmountLoading = useRef(false);
-  const isBalanceFirstLoading = useRef(true);
   const isConnected = useSelector(s => !!s.connect.account);
   const tokenList = useSelector(s => s.swapMaster.tokenList);
   const exchanges = useSelector(s => s.swapMaster.exchanges);
   const swapTokenFrom = useSelector(s => s.swap.tokenFrom);
   const swapTokenTo = useSelector(s => s.swap.tokenTo);
-  const [fromPerToAmount, setFromPerToAmount] = useState(0);
-  const [toPerFromAmount, setToPerFromAmount] = useState(0);
+  const [fromPerToAmount, setFromPerToAmount] = useState("0");
+  const [toPerFromAmount, setToPerFromAmount] = useState("0");
 
   const filteredTokenList = useMemo(
     () =>
-      tokenList.filter(({ address }) => {
+      tokenList.filter(({ address, tokenId }) => {
         const isCCD = !address;
 
         return (
@@ -35,7 +41,12 @@ export const useSwapDataUpdate = () => {
             const { index, subindex } = parseTokenAddress(exchange.token.address);
             const isFilledPool = exchange.ccdBalance > 0 && exchange.tokenBalance > 0;
 
-            return address.index === index && address.subindex === subindex && isFilledPool;
+            return (
+              isSameToken(
+                { index: address.index, subindex: address.subindex, tokenId },
+                { index, subindex, tokenId: exchange.token.id },
+              ) && isFilledPool
+            );
           })
         );
       }),
@@ -90,13 +101,13 @@ export const useSwapDataUpdate = () => {
     if (!isConnected) return;
 
     dispatch(getSwapBalances()).then(() => {
-      if (!isBalanceFirstLoading.current) {
+      const isAnyFieldTouched = Object.keys(touchedFields).length >= 1;
+
+      if (isAnyFieldTouched) {
         trigger();
-      } else {
-        isBalanceFirstLoading.current = false;
       }
     });
-  }, [dispatch, isConnected, swapTokenFrom, swapTokenTo, trigger]);
+  }, [dispatch, isConnected, swapTokenFrom, swapTokenTo, touchedFields, trigger]);
 
   return {
     fromPerToAmount,

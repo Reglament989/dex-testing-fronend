@@ -1,7 +1,7 @@
 export const CCD_DECIMALS = 6;
 
 export const PIXPEL_CONTRACT_ADDRESS = {
-  index: 3879n,
+  index: 4350n,
   subindex: 0n,
 };
 

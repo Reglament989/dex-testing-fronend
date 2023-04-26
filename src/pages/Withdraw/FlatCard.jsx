@@ -125,7 +125,7 @@ const FlatCard = () => {
           <div className="flex text-sm font-medium 2xs:text-lg">950.000 USD</div>
         </div>
         <div className="flex flex-row justify-start gap-2 mb-12">
-          <input type="checkbox" className="flex-none appearance-none checked:bg-blue-500" />
+          <input type="checkbox" className="flex-none appearance-none checked:bg-app-blue" />
           <div className="text-base font-normal text-gray-400">I have read and I accept terms.</div>
         </div>
         <div

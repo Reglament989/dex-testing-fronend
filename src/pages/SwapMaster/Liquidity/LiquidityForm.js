@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { useDispatch, useSelector } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
@@ -16,29 +17,30 @@ import {
 import { getFromPerToAmount, getPoolShare, getToPerFromAmount } from "./utils";
 import { getMaxCcdAmount } from "../Swap/utils";
 import { getCurrentExchange } from "../utils";
-import { getTokenUiAmount, toFixed } from "../../../utils/format";
+import { getShortTokenName, getTokenUiAmount } from "../../../utils/format";
 import { capitalizeString } from "../../../utils/common";
 import { validationSchema } from "./validationSchema";
 
 // Hooks
-import { useSwapInputsHandlers } from "./hooks";
+import { useLiquidityInputsHandlers } from "./hooks";
 
 // Constants
-import { LIQUIDITY_FORM_ID, LIQUIDITY_FORM_FIELDS, LP_TOKEN } from "./constants";
-import { CCD_DECIMALS } from "../../../config";
+import { LIQUIDITY_FORM_ID, LIQUIDITY_FORM_FIELDS } from "./constants";
+import { CCD_DECIMALS, LP_DATA } from "../../../config";
 
-const LiquidityForm = ({ isUnstakeMode }) => {
+const LiquidityForm = ({ isUnstakeMode, isCreateMode }) => {
   const dispatch = useDispatch();
   const tokenList = useSelector(s => s.swapMaster.tokenList);
   const tokenTo = useSelector(s => s.liquidity.tokenTo);
   const tokenFrom = tokenList[0];
+
   const exchanges = useSelector(s => s.swapMaster.exchanges);
   const exchangeData = getCurrentExchange(exchanges, tokenTo);
 
   const balanceFrom = useSelector(s => s.liquidity.balance.from);
   const balanceTo = useSelector(s => s.liquidity.balance.to);
   const balanceLp = isUnstakeMode
-    ? getTokenUiAmount(exchangeData?.lpTokensHolderBalance, CCD_DECIMALS)
+    ? getTokenUiAmount(BigNumber(exchangeData?.lpTokensHolderBalance), CCD_DECIMALS)
     : 0;
   const methods = useForm({
     defaultValues: {
@@ -66,10 +68,18 @@ const LiquidityForm = ({ isUnstakeMode }) => {
 
   const values = watch();
   const isFilledPool = exchangeData?.ccdBalance > 0 && exchangeData?.tokenBalance > 0;
-  const fromPerToRawAmount = getFromPerToAmount(values, isFilledPool && exchangeData);
-  const toPerFromRawAmount = getToPerFromAmount(values, isFilledPool && exchangeData);
-  const fromPerToUiAmount = toFixed(fromPerToRawAmount, CCD_DECIMALS);
-  const toPerFromUiAmount = toFixed(toPerFromRawAmount, tokenTo.decimals);
+  const fromPerToAmount = getFromPerToAmount({
+    values,
+    exchangeData: isFilledPool && exchangeData,
+    tokenFrom,
+    tokenTo,
+  });
+  const toPerFromAmount = getToPerFromAmount({
+    values,
+    exchangeData: isFilledPool && exchangeData,
+    tokenFrom,
+    tokenTo,
+  });
   const poolShare = getPoolShare(values, isFilledPool && exchangeData);
 
   const onSubmit = async values => {
@@ -78,8 +88,8 @@ const LiquidityForm = ({ isUnstakeMode }) => {
         modal: "confirm",
         isOpen: true,
         modalData: {
-          fromPerToAmount: fromPerToUiAmount,
-          toPerFromAmount: toPerFromUiAmount,
+          fromPerToAmount,
+          toPerFromAmount,
           values,
           poolShare,
           isUnstakeMode,
@@ -93,11 +103,9 @@ const LiquidityForm = ({ isUnstakeMode }) => {
     .map(({ message }) => message)
     .join(", ");
 
-  const { onInputTokenPair, onInputLp, onMaxTokenPair, onMaxLp } = useSwapInputsHandlers({
+  const { onInputTokenPair, onInputLp, onMaxTokenPair, onMaxLp } = useLiquidityInputsHandlers({
     isUnstakeMode,
     isFilledPool,
-    toPerFromRawAmount,
-    fromPerToRawAmount,
     tokenTo,
     setValue,
     exchangeData,
@@ -140,7 +148,7 @@ const LiquidityForm = ({ isUnstakeMode }) => {
             <>
               <TokenSelectInput
                 name={LIQUIDITY_FORM_FIELDS.lp}
-                selectedToken={LP_TOKEN}
+                selectedToken={LP_DATA}
                 backgroundColor="bg-app-black-button"
                 onInput={onInputLp}
                 isWithMaxButton
@@ -181,6 +189,7 @@ const LiquidityForm = ({ isUnstakeMode }) => {
             }}
             readOnly={isUnstakeMode}
             isSelectDisabled={isUnstakeMode}
+            isAddToken={isCreateMode}
           />
           <div className="flex flex-row justify-end mt-1 text-sm">
             <div className="font-normal text-gray-400">Balance: {balanceTo}</div>
@@ -196,18 +205,20 @@ const LiquidityForm = ({ isUnstakeMode }) => {
         <div className="flex flex-col text-lg font-medium 2xs:text-xs 2xs:justify-around 2xs:flex-row 1xs:text-base">
           <div className="flex flex-col items-center">
             <div className="flex flex-row justify-center">
-              <div>{fromPerToUiAmount}</div>
+              <div>{fromPerToAmount}</div>
             </div>
             <div>
-              {tokenFrom.title} per {tokenTo.title}
+              <span title={tokenFrom.symbol}>{getShortTokenName(tokenFrom.symbol)}</span> per&nbsp;
+              <span title={tokenTo.symbol}>{getShortTokenName(tokenTo.symbol)}</span>
             </div>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex flex-row justify-center">
-              <div>{toPerFromUiAmount}</div>
+              <div>{toPerFromAmount}</div>
             </div>
             <div>
-              {tokenTo.title} per {tokenFrom.title}
+              <span title={tokenTo.symbol}>{getShortTokenName(tokenTo.symbol)}</span> per&nbsp;
+              <span title={tokenFrom.symbol}>{getShortTokenName(tokenFrom.symbol)}</span>
             </div>
           </div>
           <div className="flex flex-col items-center">

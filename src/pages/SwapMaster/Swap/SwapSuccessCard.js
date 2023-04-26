@@ -59,25 +59,25 @@ const SwapSuccessCard = () => {
       </div>
       <div className="flex justify-center mb-5">
         <div className="text-2xl font-medium">
-          {values.from} {tokenFrom.title}
+          {values.from} {tokenFrom.symbol}
         </div>
       </div>
       <div className="flex flex-row justify-between w-full mb-3 text-xs 2xs:text-sm">
         <div className="font-normal ">Converted</div>
         <div className="font-normal ">
-          {values.to} {tokenTo.title}
+          {values.to} {tokenTo.symbol}
         </div>
       </div>
       <div className="flex flex-row justify-between w-full mb-3 text-xs 2xs:text-sm">
         <div className="font-normal ">Price</div>
         <div className="font-normal ">
-          1 {tokenFrom.title} = {fromPerToAmount} {tokenTo.title}
+          1 {tokenFrom.symbol} = {fromPerToAmount} {tokenTo.symbol}
         </div>
       </div>
       <div className="flex flex-row justify-between w-full mb-5 text-xs 2xs:text-sm">
         <div className="font-normal ">Inverse Price</div>
         <div className="font-normal ">
-          1 {tokenTo.title} = {toPerFromAmount} {tokenFrom.title}
+          1 {tokenTo.symbol} = {toPerFromAmount} {tokenFrom.symbol}
         </div>
       </div>
       <div className="flex flex-row justify-between w-full gap-4">

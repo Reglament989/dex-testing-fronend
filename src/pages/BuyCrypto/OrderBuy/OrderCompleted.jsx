@@ -53,7 +53,7 @@ const OrderCompleted = () => {
           <div className="flex flex-col items-start justify-end w-1/2 gap-2">
             <div className="p-3 rounded-md w-max bg-app-black-light">Completed</div>
             <div
-              className="text-base text-blue-500 border-b-2 border-blue-500 cursor-pointer w-max"
+              className="text-base text-app-blue font-medium border-b-2 border-app-blue cursor-pointer w-max"
               onClick={handleClick}
             >
               Check Wallet
@@ -104,8 +104,8 @@ const OrderCompleted = () => {
                     />
                   </div>
                   <div className="flex flex-row items-center gap-2">
-                    <div className="flex items-center text-5xl text-blue-500">+</div>
-                    <div className="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-full">
+                    <div className="flex items-center text-5xl text-app-blue font-medium">+</div>
+                    <div className="flex items-center justify-center w-10 h-10 bg-app-blue rounded-full">
                       <svg
                         className="w-8 h-8 text-white"
                         fill="none"

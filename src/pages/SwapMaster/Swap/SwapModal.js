@@ -75,7 +75,7 @@ const SwapModal = () => {
               </div>
               <div className="flex w-56">
                 <div className="text-xs font-medium 2xs:text-base">
-                  {values.from} {tokenFrom.title}
+                  {values.from} {tokenFrom.symbol}
                 </div>
               </div>
             </div>
@@ -85,7 +85,7 @@ const SwapModal = () => {
               </div>
               <div className="flex w-56">
                 <div className="text-xs font-medium break-all 2xs:text-base 2xs:w-auto w:52">
-                  {values.to} {tokenTo.title}
+                  {values.to} {tokenTo.symbol}
                 </div>
               </div>
             </div>

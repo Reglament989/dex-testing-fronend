@@ -57,7 +57,7 @@ export default function Modal(props) {
                     placeholder="Enter Address Here"
                   />
                 </div>
-                <div className="flex items-center justify-center h-16 px-3 bg-blue-500 rounded-md mt-7 hover:cursor-pointer">
+                <div className="flex items-center justify-center h-16 px-3 bg-app-blue rounded-md mt-7 hover:cursor-pointer">
                   <div>ADD</div>
                 </div>
               </div>

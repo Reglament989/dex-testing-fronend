@@ -166,8 +166,8 @@ const ReleaseAssets = ({ handleReleaseClick, handleCancelClick }) => {
                     />
                   </div>
                   <div className="flex flex-row items-center gap-2">
-                    <div className="flex items-center text-5xl text-blue-500">+</div>
-                    <div className="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-full">
+                    <div className="flex items-center text-5xl text-app-blue font-medium">+</div>
+                    <div className="flex items-center justify-center w-10 h-10 bg-app-blue rounded-full">
                       <svg
                         className="w-8 h-8 text-white"
                         fill="none"

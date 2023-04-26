@@ -1,25 +1,28 @@
-
 //settings
 $gutter: 30px;
 $gutter-col: 5px;
 
 //colors
-$color-red: #F6465D;
-$color-green: #2EBD85;
-$color-blue: #0095C8;
+$color-red: #f6465d;
+$color-green: #2ebd85;
+$color-blue: #0095c8;
 $color-white: #fff;
 $color-black: #000;
-$color-dark-100: #48515F;
-$color-dark-200: #37404C;
-$color-dark-300: #29313C;
-$color-dark-400: #1F2630;
-$color-gray: #717A8B;
+$color-dark-100: #48515f;
+$color-dark-200: #37404c;
+$color-dark-300: #29313c;
+$color-dark-400: #1f2630;
+$color-gray: #717a8b;
+
+:root {
+  --color-dark-200: #{$color-dark-200};
+}
 
 $color-bg: $color-dark-400;
 $color-link: $color-white;
 $color-text: $color-white;
 // fonts settings
-$font-family: 'Poppins', sans-serif;
+$font-family: "Poppins", sans-serif;
 
 @mixin font-root($fz: 18px, $lh: 27px, $fw: 400) {
   font-weight: $fw;

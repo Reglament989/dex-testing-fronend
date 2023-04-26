@@ -103,7 +103,7 @@ const TokenDropdownInput = ({ initialContent, contentList, Max, backgroundColor 
       <div className={"flex-auto " + bgColor}>
         <input className={"w-full " + bgColor} />
       </div>
-      {Max ? <div className="flex mx-5 text-blue-500">Max</div> : null}
+      {Max ? <div className="flex mx-5 text-app-blue ">MAX</div> : null}
     </div>
   );
 };

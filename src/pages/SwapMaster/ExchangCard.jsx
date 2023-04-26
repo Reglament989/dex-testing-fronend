@@ -55,7 +55,7 @@ const ExchangeCard = () => {
           </div>
           <div className="flex flex-row justify-between gap-7">
             <input className="w-72 bg-app-black-button" />
-            <div className="text-base text-blue-700">Max</div>
+            <div className="text-base text-app-blue font-medium">MAX</div>
           </div>
         </div>
         <div className="flex justify-center w-full">

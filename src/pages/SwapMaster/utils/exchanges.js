@@ -2,6 +2,7 @@
 import { parseTokenAddress, toParamContractAddress } from "../../../utils/format";
 import { invokeContract } from "../../../models/ConcordiumContractClient";
 import { PixpelSwapDeserializer } from "../../../models/PixpelSwapDeserializer";
+import { isSameToken } from "./tokens";
 
 // Actions
 import {
@@ -53,5 +54,12 @@ export const getCurrentExchange = (exchanges, tokenToData) =>
   exchanges.find(({ token }) => {
     const { index, subindex } = parseTokenAddress(token.address);
 
-    return index === tokenToData.address.index && subindex === tokenToData.address.subindex;
+    return isSameToken(
+      { index, subindex, tokenId: token.id },
+      {
+        index: tokenToData.address.index,
+        subindex: tokenToData.address.subindex,
+        tokenId: tokenToData.tokenId,
+      },
+    );
   });

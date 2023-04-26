@@ -12,7 +12,6 @@ This is a [React](https://reactjs.org/) project bootstrapped with [Create React 
       * [Configs/main](#configsmain)
       * [Configs/api](#configsapi)
       * [Configs/contractsInfo](#configscontractsinfo)
-      * [Configs/tokenList](#configstokenlist)
 
 ## 🧶 Installation
 
@@ -86,43 +85,3 @@ Contracts info config is placed if file [src/config/contractsInfo.js](src/config
 | CIS2_MULTI_CONTRACT_INFO  	| CIS2 multi contract info (contractName, schemaBuffer)  	|
 | PIXPEL_SWAP_SCHEMA        	| Pixpel Swap contract schema (hex)                      	|
 | PIXPEL_SWAP_CONTRACT_INFO 	| Pixpel Swap contract info (contractName, schemaBuffer) 	|
-
-### Configs/tokenList
-Predefined token list is placed in file [src/config/tokenList.js](src/config/tokenList.js)
-It`s an array of objects with token data  
-Example:
-```js
-export const TOKEN_LIST = [
-  {
-    id: 1,
-    title: "CCD",
-    url: "/assets/images/tokens/ccd.png",
-    decimals: CCD_DECIMALS,
-  },
-  {
-    id: 2,
-    title: "TKN1",
-    url: "/assets/images/tokens/pixp.png",
-    address: {
-      index: 3677,
-      subindex: 0,
-    },
-    tokenId: "00",
-    decimals: 6,
-  },
-  {
-    id: 3,
-    title: "TKN2",
-    url: "/assets/images/tokens/pixp.png",
-    address: {
-      index: 3678,
-      subindex: 0,
-    },
-    tokenId: "00",
-    decimals: 6,
-    style: {
-      filter: "hue-rotate(180deg)",
-    },
-  },
-]
-```

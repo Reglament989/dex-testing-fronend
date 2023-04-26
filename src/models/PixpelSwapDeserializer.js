@@ -1,11 +1,8 @@
 import { deserializeReceiveReturnValue } from "@concordium/web-sdk";
+import leb128 from "leb128";
 
 // Utils
-import {
-  CIS2_CONTRACT_METHODS,
-  PIXPEL_CONTRACT_METHODS,
-  PIXPEL_SWAP_CONTRACT_INFO,
-} from "../config";
+import { PIXPEL_CONTRACT_METHODS, PIXPEL_SWAP_CONTRACT_INFO } from "../config";
 
 // Common
 import { snakeToCamelCase } from "../utils/common";
@@ -45,14 +42,9 @@ export class PixpelSwapDeserializer {
   }
 
   readBalanceOf() {
-    const deserializedValue = deserializeReceiveReturnValue(
-      this.buffer,
-      PIXPEL_SWAP_CONTRACT_INFO.schemaBuffer,
-      PIXPEL_SWAP_CONTRACT_INFO.contractName,
-      CIS2_CONTRACT_METHODS.balanceOf,
-    );
+    const slicedBuffer = this.buffer.slice(2);
 
-    return deserializedValue[0];
+    return leb128.unsigned.decode(slicedBuffer);
   }
 
   readTokenToCcdAmount() {

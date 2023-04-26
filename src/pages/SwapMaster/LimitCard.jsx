@@ -114,7 +114,7 @@ const LimitCard = () => {
                 <input className="w-full bg-app-black-button" />
               </div>
               <DropdownButton
-                initialContent={currencyList[0].title}
+                initialContent={currencyList[0].symbol}
                 backgroundColor="bg-app-black-button"
                 contentList={currencyList}
               />
@@ -122,7 +122,7 @@ const LimitCard = () => {
             <div className="flex flex-row items-center justify-between w-1/3 h-16 py-5 pl-5 rounded-lg bg-app-black-button">
               <div className="text-base">1day</div>
               <DropdownButton
-                initialContent={currencyList[0].title}
+                initialContent={currencyList[0].symbol}
                 backgroundColor="bg-app-black-button"
                 contentList={currencyList}
               />

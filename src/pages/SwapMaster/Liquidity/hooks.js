@@ -1,17 +1,21 @@
+import BigNumber from "bignumber.js";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Utils
 import { getLiquidityBalances } from "./utils";
 import { getMaxCcdAmount } from "../Swap/utils";
-import { getTokenRawAmount, getTokenUiAmount, toFixed } from "../../../utils/format";
-import { getExchanges } from "../utils";
+import { getTokenRawAmount, getTokenUiAmount } from "../../../utils/format";
 
 // Actions
 import { setLiquidityActiveWindow } from "../../../store/reducers/SwapMaster/liquiditySlice";
 
 // Constants
-import { LIQUIDITY_FORM_FIELDS, LIQUIDITY_WINDOWS } from "./constants";
+import {
+  LIQUIDITY_FORM_FIELDS,
+  LIQUIDITY_WINDOWS,
+  LIQUIDITY_ADD_TOKEN_FORM_FIELDS,
+} from "./constants";
 import { CCD_DECIMALS } from "../../../config";
 
 export const useLiquidityDataUpdate = () => {
@@ -23,18 +27,16 @@ export const useLiquidityDataUpdate = () => {
     if (!isConnected) return;
 
     dispatch(getLiquidityBalances());
-  }, [dispatch, isConnected, liquidityTokenTo.address?.index, liquidityTokenTo.address?.subindex]);
+  }, [dispatch, isConnected, liquidityTokenTo]);
 
   useEffect(() => {
     dispatch(setLiquidityActiveWindow(LIQUIDITY_WINDOWS.pools));
   }, [dispatch]);
 };
 
-export const useSwapInputsHandlers = ({
+export const useLiquidityInputsHandlers = ({
   isUnstakeMode,
   isFilledPool,
-  toPerFromRawAmount,
-  fromPerToRawAmount,
   tokenTo,
   exchangeData,
   balanceLp,
@@ -44,21 +46,39 @@ export const useSwapInputsHandlers = ({
 }) => {
   const handleAddLiquidityAmount = (name, value) => {
     const isFromField = name === LIQUIDITY_FORM_FIELDS.from;
-    const coef = isFromField ? toPerFromRawAmount : fromPerToRawAmount;
     const targetField = isFromField ? LIQUIDITY_FORM_FIELDS.to : LIQUIDITY_FORM_FIELDS.from;
-    const decimals = isFromField ? CCD_DECIMALS : tokenTo.decimals;
-    const targetAmount = toFixed(value * coef, decimals, isFromField ? "up" : "down");
+    const decimalsFrom = isFromField ? CCD_DECIMALS : tokenTo.decimals;
+    const decimalsTo = isFromField ? tokenTo.decimals : CCD_DECIMALS;
+    const sourceRawAmount = getTokenRawAmount(value, decimalsFrom);
+    const multiplier = BigNumber(isFromField ? exchangeData.tokenBalance : exchangeData.ccdBalance);
+    const divider = BigNumber(isFromField ? exchangeData.ccdBalance : exchangeData.tokenBalance);
+    const roundingMode = isFromField ? BigNumber.ROUND_UP : BigNumber.ROUND_DOWN;
 
-    setValue(targetField, targetAmount, { shouldValidate: true });
+    const targetRawAmount = sourceRawAmount
+      .multipliedBy(multiplier)
+      .dividedBy(divider)
+      .decimalPlaces(decimalsTo, roundingMode);
+    setValue(targetField, getTokenUiAmount(targetRawAmount, decimalsTo), {
+      shouldValidate: true,
+    });
   };
 
   const handleRemoveLiquidityAmount = value => {
     if (!exchangeData) return;
 
-    const coef = getTokenRawAmount(value, CCD_DECIMALS) / exchangeData.lpTokensSupply;
-    const tokenDecimals = tokenTo.decimals;
-    const targetCcdAmount = getTokenUiAmount(exchangeData.ccdBalance * coef, CCD_DECIMALS);
-    const targetTokenAmount = getTokenUiAmount(exchangeData.tokenBalance * coef, tokenDecimals);
+    const lpTokensSupply = BigNumber(exchangeData.lpTokensSupply);
+    const ccdBalance = BigNumber(exchangeData.ccdBalance);
+    const tokenBalance = BigNumber(exchangeData.tokenBalance);
+
+    const lpRawAmount = getTokenRawAmount(value, CCD_DECIMALS);
+    const targetCcdAmount = getTokenUiAmount(
+      ccdBalance.multipliedBy(lpRawAmount).dividedBy(lpTokensSupply),
+      CCD_DECIMALS,
+    );
+    const targetTokenAmount = getTokenUiAmount(
+      tokenBalance.multipliedBy(lpRawAmount).dividedBy(lpTokensSupply),
+      tokenTo.decimals,
+    );
 
     setValue(LIQUIDITY_FORM_FIELDS.from, targetCcdAmount);
     setValue(LIQUIDITY_FORM_FIELDS.to, targetTokenAmount, { shouldValidate: true });
@@ -90,10 +110,16 @@ export const useSwapInputsHandlers = ({
     if (isFilledPool) handleAddLiquidityAmount(name, balance);
   };
 
+  const onAddTokenInput = event => {
+    const value = event.target?.value?.trim();
+    setValue(LIQUIDITY_ADD_TOKEN_FORM_FIELDS[event.target.name], value, { shouldValidate: true });
+  };
+
   return {
     onInputTokenPair: isFilledPool && !isUnstakeMode ? onAddLiquidityInput : () => null,
     onMaxTokenPair: !isUnstakeMode ? onMaxAddLiquidityInput : () => null,
     onInputLp,
     onMaxLp,
+    onAddTokenInput,
   };
 };

@@ -73,7 +73,7 @@ const TransferModal = props => {
                   </div>
                   <div className="bg-app-black flex justify-between items-center xs:w-1/2 py-2 px-4 rounded-md">
                     <div className="text-gray-400">AMOUNT</div>
-                    <div className="text-blue-500">MAX</div>
+                    <div className="text-app-blue font-medium">MAX</div>
                   </div>
                 </div>
                 <div className="text-gray-400 flex justify-end my-2 text-sm">

@@ -62,7 +62,7 @@ const SwapForm = () => {
     const isCCD = !tokenFrom.address;
     const balance = isCCD ? getMaxCcdAmount(balanceFrom) : balanceFrom;
 
-    setValue(SWAP_FORM_FIELDS.from, balance, { shouldValidate: true });
+    setValue(SWAP_FORM_FIELDS.from, balance, { shouldValidate: true, shouldTouch: true });
   };
 
   const errorMessage = Object.values(errors)
@@ -72,7 +72,7 @@ const SwapForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`flex flex-col mb-3 rounded-md w-full 2xl:w-155 bg-app-black sm:p-[50px] xs:p-[40px] 1xs:p-[30px] 2xs:p-[20px] p-[10px] ${
+      className={`flex flex-col rounded-md w-full 2xl:w-155 bg-app-black sm:p-[50px] xs:p-[40px] 1xs:p-[30px] 2xs:p-[20px] p-[10px] ${
         isNoFilledPools ? "relative pointer-events-none" : ""
       }`}
     >
@@ -91,12 +91,14 @@ const SwapForm = () => {
         }}
         isWithMaxButton
         onMaxHandler={onMaxHandler}
+        isAddToken
       />
       <div className="flex justify-center w-full mt-5">
         <div
           className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button"
           style={{ marginBottom: "10px", width: "53px", height: "53px" }}
           onClick={handleSwapDirection}
+          title="Revert swap direction"
         >
           <SwapDirectionIcon />
         </div>
@@ -115,18 +117,19 @@ const SwapForm = () => {
         onTokenSelect={tokenData => {
           dispatch(setSwapTokenTo(tokenData));
         }}
+        isAddToken
       />
       <div className="flex flex-col gap-2 mt-5 text-sm border-b-2 border-app-black">
         <div className="flex flex-row justify-between">
           <div>Price</div>
           <div>
-            1 {tokenFrom.title} = {toPerFromAmount} {tokenTo.title}
+            1 {tokenFrom.symbol} = {toPerFromAmount} {tokenTo.symbol}
           </div>
         </div>
         <div className="flex flex-row justify-between">
           <div>Inverse Price</div>
           <div>
-            1 {tokenTo.title} = {fromPerToAmount} {tokenFrom.title}
+            1 {tokenTo.symbol} = {fromPerToAmount} {tokenFrom.symbol}
           </div>
         </div>
         <div className="flex flex-row items-center justify-between mb-4">
@@ -145,10 +148,8 @@ const SwapForm = () => {
         {capitalizeString(errorMessage) || "Confirm"}
       </MainButton>
       {isNoFilledPools && (
-        <div className="absolute top-0 right-0 bottom-0 left-0 bg-black bg-opacity-25">
-          <p className="text-lg absolute top-2 left-1/2 transform -translate-x-1/2">
-            No filled pools found
-          </p>
+        <div className="absolute top-0 right-0 bottom-0 left-0 bg-black bg-opacity-25 flex items-start justify-center">
+          <p className="text-lg pt-4">No filled pools found</p>
         </div>
       )}
     </form>

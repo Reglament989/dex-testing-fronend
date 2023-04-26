@@ -3,9 +3,6 @@ import { startOfHour, addDays, addWeeks, addMonths } from "date-fns";
 // Utils
 import { pixpelRequest } from "../../../../utils/axios";
 
-// Constants
-import { JS_NODE_URL } from "../../../../config";
-
 const getTokenParam = tokenData => {
   if (!tokenData.address) return "CCD";
 
@@ -32,14 +29,14 @@ export const getChartData = async ({ tokenFrom, tokenTo, period }) => {
   const dateFrom = periodMethod(startOfHourDate, -1);
 
   try {
-    const response = await pixpelRequest.post(`${JS_NODE_URL}/chart-data`, {
+    const response = await pixpelRequest.post("/chart-data", {
       pairFrom: getTokenParam(tokenFrom),
       pairTo: getTokenParam(tokenTo),
       dateFrom: dateFrom,
       dateTo: startOfHourDate,
     });
 
-    return response.data.chartData;
+    return response.data.chartData || [];
   } catch {
     return [];
   }

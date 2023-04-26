@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 // Utils
 import { getBalance, getCCDBalance } from "../../utils";
 import { getTokenUiAmount, toBigIntContractAddress } from "../../../../utils/format";
@@ -5,10 +7,10 @@ import { getTokenUiAmount, toBigIntContractAddress } from "../../../../utils/for
 // Actions
 import { setSwapBalances } from "../../../../store/reducers/SwapMaster/swapSlice";
 
-const getBalanceHelper = ({ tokenAddress, tokenId }) => {
+const getBalanceHelper = ({ tokenAddress, tokenId, contractName }) => {
   const isCCD = !tokenAddress;
 
-  return isCCD ? getCCDBalance() : getBalance({ tokenAddress, tokenId });
+  return isCCD ? getCCDBalance() : getBalance({ tokenAddress, tokenId, contractName });
 };
 
 export const getSwapBalances = () => async (dispatch, getState) => {
@@ -19,6 +21,7 @@ export const getSwapBalances = () => async (dispatch, getState) => {
     getBalanceHelper({
       tokenAddress: tokenFrom.address && toBigIntContractAddress(tokenFrom.address),
       tokenId: tokenFrom.tokenId,
+      contractName: tokenFrom.contractName,
     }),
   );
 
@@ -26,13 +29,14 @@ export const getSwapBalances = () => async (dispatch, getState) => {
     getBalanceHelper({
       tokenAddress: tokenTo.address && toBigIntContractAddress(tokenTo.address),
       tokenId: tokenTo.tokenId,
+      contractName: tokenTo.contractName,
     }),
   );
 
   dispatch(
     setSwapBalances({
-      balanceFrom: getTokenUiAmount(tokenFromBalance?.toString(), tokenFrom.decimals),
-      balanceTo: getTokenUiAmount(tokenToBalance?.toString(), tokenTo.decimals),
+      balanceFrom: getTokenUiAmount(BigNumber(tokenFromBalance?.toString()), tokenFrom.decimals),
+      balanceTo: getTokenUiAmount(BigNumber(tokenToBalance?.toString()), tokenTo.decimals),
     }),
   );
 };

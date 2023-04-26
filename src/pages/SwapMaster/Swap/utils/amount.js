@@ -1,5 +1,7 @@
+import BigNumber from "bignumber.js";
+
 // Utils
-import { getTokenRawAmount, getTokenUiAmount, toFixed } from "../../../../utils/format";
+import { getTokenRawAmount, getTokenUiAmount } from "../../../../utils/format";
 import { invokeContract } from "../../../../models/ConcordiumContractClient";
 import { PixpelSwapDeserializer } from "../../../../models/PixpelSwapDeserializer";
 
@@ -22,13 +24,13 @@ export const getTokenToCcdSwapAmount = async ({ tokenData, amount }) => {
     PIXPEL_CONTRACT_METHODS.tokenToCcdAmount,
     {
       token: { address, id: tokenId },
-      token_sold: String(getTokenRawAmount(amount, decimals)),
+      token_sold: getTokenRawAmount(amount, decimals).toString(),
     },
   );
 
   const parsedRawAmount = new PixpelSwapDeserializer(returnedValue).readTokenToCcdAmount();
 
-  return getTokenUiAmount(parsedRawAmount, CCD_DECIMALS);
+  return getTokenUiAmount(BigNumber(parsedRawAmount), CCD_DECIMALS);
 };
 
 export const getCcdToTokenSwapAmount = async ({ tokenData, amount }) => {
@@ -41,12 +43,12 @@ export const getCcdToTokenSwapAmount = async ({ tokenData, amount }) => {
     PIXPEL_CONTRACT_METHODS.ccdToTokenAmount,
     {
       token: { address, id: tokenId },
-      ccd_sold: String(getTokenRawAmount(amount, CCD_DECIMALS)),
+      ccd_sold: getTokenRawAmount(amount, CCD_DECIMALS).toString(),
     },
   );
   const parsedRawAmount = new PixpelSwapDeserializer(returnedValue).readCcdToTokenAmount();
 
-  return getTokenUiAmount(parsedRawAmount, decimals);
+  return getTokenUiAmount(BigNumber(parsedRawAmount), decimals);
 };
 
 export const getTokenToTokenSwapAmount = async ({ tokenFrom, tokenTo, amount }) => {
@@ -58,12 +60,12 @@ export const getTokenToTokenSwapAmount = async ({ tokenFrom, tokenTo, amount }) 
     {
       token: { address: tokenFrom.address, id: tokenFrom.tokenId },
       purchased_token: { address: tokenTo.address, id: tokenTo.tokenId },
-      token_sold: String(getTokenRawAmount(amount, tokenFrom.decimals)),
+      token_sold: getTokenRawAmount(amount, tokenFrom.decimals).toString(),
     },
   );
   const parsedRawAmount = new PixpelSwapDeserializer(returnedValue).readTokenToTokenAmount();
 
-  return getTokenUiAmount(parsedRawAmount, tokenTo.decimals);
+  return getTokenUiAmount(BigNumber(parsedRawAmount), tokenTo.decimals);
 };
 
 export const getAmount = amount => (dispatch, getState) => {
@@ -98,5 +100,11 @@ export const getAmount = amount => (dispatch, getState) => {
 };
 
 // max value for amount inputs, considering fee etc.
-export const getMaxCcdAmount = ccdUiBalance =>
-  ccdUiBalance >= MAX_CCD_DELTA ? toFixed(ccdUiBalance - MAX_CCD_DELTA, CCD_DECIMALS) : 0;
+export const getMaxCcdAmount = ccdUiBalance => {
+  const ccdUiBalanceBn = BigNumber(ccdUiBalance);
+  const maxCcdAmountBn = BigNumber(MAX_CCD_DELTA);
+
+  return ccdUiBalanceBn.isGreaterThanOrEqualTo(maxCcdAmountBn)
+    ? ccdUiBalanceBn.minus(maxCcdAmountBn).decimalPlaces(CCD_DECIMALS).toString()
+    : "0";
+};

@@ -1,6 +1,5 @@
-import { CCD_DECIMALS } from "../../../config";
-
 export const LIQUIDITY_FORM_ID = "liquidity-form";
+export const LIQUIDITY_ADD_TOKEN_FORM_ID = "liquidity-add-token-form";
 export const LIQUIDITY_WINDOWS = {
   pools: "pools",
   form: "form",
@@ -10,9 +9,7 @@ export const LIQUIDITY_FORM_FIELDS = {
   to: "to",
   lp: "lp",
 };
-
-export const LP_TOKEN = {
-  title: "LP",
-  url: "/assets/images/tokens/ccd.png",
-  decimals: CCD_DECIMALS,
+export const LIQUIDITY_ADD_TOKEN_FORM_FIELDS = {
+  tokenIndex: "tokenIndex",
+  tokenId: "tokenId",
 };

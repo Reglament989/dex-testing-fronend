@@ -79,7 +79,7 @@ const SellList = ({ handleSellClick }) => {
               <div className="flex-auto">
                 <input className="w-full bg-app-black-button" />
               </div>
-              <div className="flex mx-5 text-blue-500">Max</div>
+              <div className="flex mx-5 text-app-blue font-medium">MAX</div>
             </div>
             <div className="mb-2">Receive:</div>
             <div className="flex flex-row items-center w-full h-16 mb-10 rounded-md bg-app-black-button">

@@ -5,7 +5,7 @@ const Row = () => {
     <div className="flex flex-row justify-between pb-2 mt-5 border-b-2 border-app-black">
       <div className="w-3/4">
         <div className="flex flex-row items-center gap-4">
-          <input type="checkbox" className="appearance-none checked:bg-blue-500" />
+          <input type="checkbox" className="appearance-none checked:bg-app-blue" />
           <div className="text-lg font-semibold">Withdraw</div>
         </div>
         <div className="text-sm text-gray-500 truncate pl-9">

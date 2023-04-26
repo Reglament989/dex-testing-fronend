@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 // Utils
 import { updateContract } from "../../../../models/ConcordiumContractClient";
 import {
@@ -32,14 +34,19 @@ export const addLiquidity =
     const provider = getState().connect.provider;
     const tokenTo = getState().liquidity.tokenTo;
 
-    await updateOperator({ provider, account, tokenAddress: tokenTo.address });
+    await updateOperator({
+      provider,
+      account,
+      tokenAddress: tokenTo.address,
+      contractName: tokenTo.contractName,
+    });
 
     await updateContract(
       provider,
       PIXPEL_SWAP_CONTRACT_INFO,
       {
         token: { address: tokenTo.address, id: tokenTo.tokenId },
-        token_amount: String(getTokenRawAmount(values.to, tokenTo.decimals)),
+        token_amount: getTokenRawAmount(values.to, tokenTo.decimals).toString(),
       },
       account,
       PIXPEL_CONTRACT_ADDRESS,
@@ -49,12 +56,13 @@ export const addLiquidity =
     );
 
     await dispatch(getExchanges());
+    await dispatch(getLiquidityBalances());
 
     const exchanges = getState().swapMaster.exchanges;
     const currentExchange = getCurrentExchange(exchanges, tokenTo);
     const lpBalance = currentExchange?.lpTokensHolderBalance;
 
-    return lpBalance ? getTokenUiAmount(lpBalance, CCD_DECIMALS) : 0;
+    return lpBalance ? getTokenUiAmount(BigNumber(lpBalance), CCD_DECIMALS) : "0";
   };
 
 export const removeLiquidity =
@@ -69,7 +77,7 @@ export const removeLiquidity =
       PIXPEL_SWAP_CONTRACT_INFO,
       {
         token: { address: tokenTo.address, id: tokenTo.tokenId },
-        lp_token_amount: String(getTokenRawAmount(values.lp, CCD_DECIMALS)),
+        lp_token_amount: getTokenRawAmount(values.lp, CCD_DECIMALS).toString(),
       },
       account,
       PIXPEL_CONTRACT_ADDRESS,
@@ -78,12 +86,13 @@ export const removeLiquidity =
     );
 
     await dispatch(getExchanges());
+    await dispatch(getLiquidityBalances());
 
     const exchanges = getState().swapMaster.exchanges;
     const currentExchange = getCurrentExchange(exchanges, tokenTo);
     const lpBalance = currentExchange?.lpTokensHolderBalance;
 
-    return lpBalance ? getTokenUiAmount(lpBalance, CCD_DECIMALS) : 0;
+    return lpBalance ? getTokenUiAmount(BigNumber(lpBalance), CCD_DECIMALS) : "0";
   };
 
 export const getLiquidityBalances = () => async (dispatch, getState) => {
@@ -93,17 +102,20 @@ export const getLiquidityBalances = () => async (dispatch, getState) => {
 
   const tokenFromBalance = await dispatch(getCCDBalance());
 
-  const tokenToBalance = await dispatch(
-    getBalance({
-      tokenAddress: toBigIntContractAddress(tokenTo.address),
-      tokenId: tokenTo.tokenId,
-    }),
-  );
+  const tokenToBalance = tokenTo.address
+    ? await dispatch(
+        getBalance({
+          tokenAddress: toBigIntContractAddress(tokenTo.address),
+          tokenId: tokenTo.tokenId,
+          contractName: tokenTo.contractName,
+        }),
+      )
+    : BigInt(0);
 
   dispatch(
     setLiquidityBalances({
-      balanceFrom: getTokenUiAmount(tokenFromBalance?.toString(), tokenFrom.decimals),
-      balanceTo: getTokenUiAmount(tokenToBalance?.toString(), tokenTo.decimals),
+      balanceFrom: getTokenUiAmount(BigNumber(tokenFromBalance?.toString()), tokenFrom.decimals),
+      balanceTo: getTokenUiAmount(BigNumber(tokenToBalance?.toString()), tokenTo.decimals),
     }),
   );
 };

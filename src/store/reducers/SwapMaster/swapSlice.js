@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TOKEN_LIST } from "../../../config";
 
 const initialState = {
-  tokenFrom: TOKEN_LIST[0],
-  tokenTo: TOKEN_LIST[1],
+  tokenFrom: {},
+  tokenTo: {},
   balance: {
     from: 0,
     to: 0,
@@ -33,8 +32,8 @@ const swapSlice = createSlice({
     setSwapTokens: (state, action) => {
       const { tokenFrom, tokenTo } = action.payload;
 
-      state.tokenFrom = tokenFrom;
-      state.tokenTo = tokenTo;
+      state.tokenFrom = tokenFrom || {};
+      state.tokenTo = tokenTo || {};
     },
     setSwapBalances: (state, action) => {
       const { balanceFrom, balanceTo } = action.payload;

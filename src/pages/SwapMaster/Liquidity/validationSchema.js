@@ -1,8 +1,11 @@
 import * as yup from "yup";
 
+// Utils
+import { isHEX } from "../../../utils/format";
+
 // Constants
-import { LIQUIDITY_FORM_FIELDS } from "./constants";
-import { CCD_DECIMALS } from "../../../config";
+import { LIQUIDITY_FORM_FIELDS, LIQUIDITY_ADD_TOKEN_FORM_FIELDS } from "./constants";
+import { CCD_DECIMALS, PIXPEL_CONTRACT_ADDRESS } from "../../../config";
 
 const baseInputSchema = yup
   .number()
@@ -25,6 +28,24 @@ const baseInputSchema = yup
 
     return true;
   });
+
+const baseAddTokenIndexSchema = yup
+  .number()
+  .typeError("Contract Index must be an Integer")
+  .required("Contract Index is required field")
+  .transform((value, rawValue) => {
+    return rawValue === "" ? undefined : value;
+  })
+  .positive()
+  .test(
+    "SwapContractIndex",
+    "Contract Index cannot be the same as swap contract index",
+    value => value !== Number(PIXPEL_CONTRACT_ADDRESS.index),
+  );
+
+const baseAddTokenIdSchema = yup
+  .string()
+  .test("HEX", "Token Id must be empty or hex", value => value === "" || isHEX(value));
 
 export const validationSchema = yup.object().shape({
   [LIQUIDITY_FORM_FIELDS.lp]: baseInputSchema
@@ -64,4 +85,9 @@ export const validationSchema = yup.object().shape({
 
       return value <= balanceTo;
     }),
+});
+
+export const validationCreatTokenSchema = yup.object().shape({
+  [LIQUIDITY_ADD_TOKEN_FORM_FIELDS.tokenIndex]: baseAddTokenIndexSchema,
+  [LIQUIDITY_ADD_TOKEN_FORM_FIELDS.tokenId]: baseAddTokenIdSchema,
 });

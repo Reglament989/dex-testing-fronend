@@ -44,7 +44,7 @@ export default function OrderConfirmModal(props) {
                   confirm that the money has arrived in the “Available Ballance”
                 </div>
                 <div className="flex flex-row w-full gap-2 mb-16 1xs:w-2/3">
-                  <input type="Checkbox" className="bg-blue-500" />
+                  <input type="Checkbox" className="bg-app-blue" />
                   <div className="flex w-full text-sm font-medium text-gray-400">
                     I confirm that the payment is successfully received with the correct amount and
                     sender information.

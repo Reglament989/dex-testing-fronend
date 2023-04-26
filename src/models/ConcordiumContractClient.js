@@ -21,6 +21,7 @@ export const customRpcClient = new JsonRpcClient(new HttpProvider(JSON_RPC_URL))
  * @param methodName Contract Method name to Call.
  * @param [params] Parameters to call the Contract Method with.
  * @param [invoker] Invoker Account.
+ * @param [customParameter] Custom parameter
  * @returns Buffer of the return value.
  */
 export async function invokeContract(
@@ -30,14 +31,17 @@ export async function invokeContract(
   methodName,
   params,
   invoker,
+  customParameter,
 ) {
-  const { schemaBuffer, contractName } = contractInfo;
+  const { contractName, schemaBuffer, serializationContractName } = contractInfo;
 
-  const parameter = params
-    ? await serializeParamsWithReattempt({
-        params: [contractName, schemaBuffer, methodName, params],
-      })
-    : undefined;
+  const parameter =
+    customParameter ||
+    (params
+      ? await serializeParamsWithReattempt({
+          params: [serializationContractName || contractName, schemaBuffer, methodName, params],
+        })
+      : undefined);
 
   const client = provider?.getJsonRpcClient() || customRpcClient;
 
@@ -51,20 +55,34 @@ export async function invokeContract(
   const res = await client.invokeContract(contractContext);
 
   if (!res || res.tag === "failure") {
-    const errorData =
-      res.returnValue &&
-      deserializeReceiveError(
-        Buffer.from(res.returnValue, "hex"),
-        schemaBuffer,
-        contractName,
-        methodName,
-      );
+    try {
+      const errorData =
+        res.returnValue &&
+        deserializeReceiveError(
+          Buffer.from(res.returnValue, "hex"),
+          schemaBuffer,
+          contractName,
+          methodName,
+        );
 
-    console.log(
-      `%c::${"deserialized error"}`,
-      "background: #5ebaf2; color: #fff; border-radius: 5px; padding: 2px 5px;",
-      errorData,
-    );
+      console.log(
+        `%c::${"Deserialized error"}`,
+        "background: #5ebaf2; color: #fff; border-radius: 5px; padding: 2px 5px;",
+        errorData,
+      );
+    } catch (error) {
+      console.log(
+        `%c::${"Deserialization error"}`,
+        "background: #5ebaf2; color: #fff; border-radius: 5px; padding: 2px 5px;",
+        error,
+      );
+      console.log(
+        `%c::${"Failure result"}`,
+        "background: #5ebaf2; color: #fff; border-radius: 5px; padding: 2px 5px;",
+        res,
+      );
+    }
+
     const msg =
       `failed invoking contract ` +
       `method:${methodName}, ` +
@@ -109,8 +127,13 @@ export async function updateContract(
   maxContractExecutionEnergy = BigInt(9999),
   ccdUiAmount = 0,
 ) {
-  const { schemaBuffer, contractName } = contractInfo;
-  const parameter = serializeParams(contractName, schemaBuffer, methodName, paramJson);
+  const { schemaBuffer, contractName, serializationContractName, schemaWithContext } = contractInfo;
+  const parameter = serializeParams(
+    serializationContractName || contractName,
+    schemaBuffer,
+    methodName,
+    paramJson,
+  );
   let txnHash = await provider.sendTransaction(
     account,
     AccountTransactionType.Update,
@@ -122,7 +145,7 @@ export async function updateContract(
       receiveName: `${contractName}.${methodName}`,
     },
     paramJson,
-    schemaBuffer.toString("base64"),
+    schemaWithContext || schemaBuffer.toString("base64"),
     SchemaVersion.V2,
   );
   const outcomes = await waitForTransaction(provider, txnHash);

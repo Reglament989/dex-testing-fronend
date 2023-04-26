@@ -22,17 +22,17 @@ export const changeSwapDirection = () => async (dispatch, getState) => {
 };
 
 const swapTokenToCcd = async ({ tokenData, amountFrom, amountTo, provider, account }) => {
-  const { address, decimals, tokenId } = tokenData;
+  const { address, decimals, tokenId, contractName } = tokenData;
 
-  await updateOperator({ provider, account, tokenAddress: address });
+  await updateOperator({ provider, account, tokenAddress: address, contractName });
 
   return updateContract(
     provider,
     PIXPEL_SWAP_CONTRACT_INFO,
     {
       token: { address, id: tokenId },
-      token_sold: String(getTokenRawAmount(amountFrom, decimals)),
-      min_ccd_amount: String(getTokenRawAmount(amountTo, CCD_DECIMALS)),
+      token_sold: getTokenRawAmount(amountFrom, decimals).toString(),
+      min_ccd_amount: getTokenRawAmount(amountTo, CCD_DECIMALS).toString(),
     },
     account,
     PIXPEL_CONTRACT_ADDRESS,
@@ -49,7 +49,7 @@ const swapCcdToToken = async ({ tokenData, amountFrom, amountTo, provider, accou
     PIXPEL_SWAP_CONTRACT_INFO,
     {
       token: { address, id: tokenId },
-      min_token_amount: String(getTokenRawAmount(amountTo, decimals)),
+      min_token_amount: getTokenRawAmount(amountTo, decimals).toString(),
     },
     account,
     PIXPEL_CONTRACT_ADDRESS,
@@ -67,7 +67,12 @@ const swapTokenToToken = async ({
   provider,
   account,
 }) => {
-  await updateOperator({ provider, account, tokenAddress: tokenFrom.address });
+  await updateOperator({
+    provider,
+    account,
+    tokenAddress: tokenFrom.address,
+    contractName: tokenFrom.contractName,
+  });
 
   return updateContract(
     provider,
@@ -75,8 +80,8 @@ const swapTokenToToken = async ({
     {
       token: { address: tokenFrom.address, id: tokenFrom.tokenId },
       purchased_token: { address: tokenTo.address, id: tokenTo.tokenId },
-      token_sold: String(getTokenRawAmount(amountFrom, tokenFrom.decimals)),
-      min_purchased_token_amount: String(getTokenRawAmount(amountTo, tokenTo.decimals)),
+      token_sold: getTokenRawAmount(amountFrom, tokenFrom.decimals).toString(),
+      min_purchased_token_amount: getTokenRawAmount(amountTo, tokenTo.decimals).toString(),
     },
     account,
     PIXPEL_CONTRACT_ADDRESS,

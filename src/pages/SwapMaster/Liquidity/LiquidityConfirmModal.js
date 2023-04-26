@@ -7,6 +7,7 @@ import { MainButton } from "../../../components/Button/MainButton";
 
 // Utils
 import { addLiquidity, removeLiquidity } from "./utils";
+import { getModalOverflow } from "../../../utils/common";
 
 // Actions
 import { setIsLiquidityModalOpen } from "../../../store/reducers/SwapMaster/liquiditySlice";
@@ -59,7 +60,7 @@ const LiquidityConfirmModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 overflow-y-auto">
+    <div className={`fixed inset-0 z-10 ${getModalOverflow()}`}>
       <div className="fixed inset-0 w-full h-full bg-black opacity-40" onClick={closeModal} />
       <div className="flex items-center min-h-screen px-4 py-8">
         <div className="relative flex flex-col mx-auto text-lg shadow-lg w-158 bg-app-black-modal rounded-xl sm:p-[50px] xs:p-[40px] 1xs:p-[30px] 2xs:p-[20px] p-[10px]">
@@ -69,58 +70,63 @@ const LiquidityConfirmModal = () => {
             </div>
           </div>
           <div className="flex flex-row items-center mb-5 gap-2">
-            <img className="h-6" src={tokenFrom.url} alt={tokenFrom.title} />
-            <p>{tokenFrom.title}</p>
+            <img className="h-6" src={tokenFrom.images?.thumbnail.url} alt={tokenFrom.symbol} />
+            <p>{tokenFrom.symbol}</p>
             <span>/</span>
-            <img className="h-6" src={tokenTo.url} alt={tokenTo.title} style={tokenTo.style} />
-            <p>{tokenTo.title}</p>
+            <img
+              className="h-6"
+              src={tokenTo.images?.thumbnail.url}
+              alt={tokenTo.symbol}
+              style={tokenTo.style}
+            />
+            <p>{tokenTo.symbol}</p>
           </div>
           <div className="text-xs 2xs:text-base">
             {isUnstakeMode && (
               <>
                 <div className="flex flex-row justify-between py-5 mb-2 rounded-md px-7 bg-app-black">
                   <div className="font-normal ">LP Deposited</div>
-                  <div className="font-medium text-blue-700">{values.lp}</div>
+                  <div className="font-medium text-app-blue">{values.lp}</div>
                 </div>
               </>
             )}
             <div className="flex flex-row justify-between py-5 mb-2 rounded-md px-7 bg-app-black">
               <div className="font-normal ">
-                {tokenFrom.title} {isUnstakeMode ? "Receiving" : "Deposited"}
+                {tokenFrom.symbol} {isUnstakeMode ? "Receiving" : "Deposited"}
               </div>
-              <div className="font-medium text-blue-700">{values.from}</div>
+              <div className="font-medium text-app-blue">{values.from}</div>
             </div>
             <div className="flex flex-row justify-between py-5 mb-2 last:mb-5 rounded-md px-7 bg-app-black">
               <div className="font-normal ">
-                {tokenTo.title} {isUnstakeMode ? "Receiving" : "Deposited"}
+                {tokenTo.symbol} {isUnstakeMode ? "Receiving" : "Deposited"}
               </div>
-              <div className="font-medium text-blue-700">{values.to}</div>
+              <div className="font-medium text-app-blue">{values.to}</div>
             </div>
             {!isUnstakeMode && (
               <>
                 <div className="flex flex-col py-5 mb-2 rounded-md px-7 bg-app-black">
                   <div className="flex flex-row justify-between mb-3">
                     <div className="font-normal">Rates</div>
-                    <div className="font-medium text-blue-700">
-                      1 {tokenFrom.title} = {fromPerToAmount} {tokenTo.title}
+                    <div className="font-medium text-app-blue">
+                      1 {tokenFrom.symbol} = {fromPerToAmount} {tokenTo.symbol}
                     </div>
                   </div>
                   <div className="flex flex-row justify-end">
-                    <div className="font-medium text-blue-700">
-                      1 {tokenTo.title} = {toPerFromAmount} {tokenFrom.title}
+                    <div className="font-medium text-app-blue">
+                      1 {tokenTo.symbol} = {toPerFromAmount} {tokenFrom.symbol}
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-row justify-between py-5 last:mb-5 rounded-md px-7 bg-app-black">
                   <div className="font-normal">Share of Pool</div>
-                  <div className="font-medium text-blue-700">{poolShare}%</div>
+                  <div className="font-medium text-app-blue">{poolShare}%</div>
                 </div>
               </>
             )}
           </div>
           <MainButton
             disabled={isProcessing}
-            className="flex items-center justify-center rounded-md cursor-pointer h-14 bg-app-blue hover:bg-app-blue disabled:cursor-wait"
+            className="flex items-center justify-center rounded-md cursor-pointer h-14 bg-app-green hover:bg-app-green disabled:cursor-wait"
             onClick={onConfirm}
           >
             {isProcessing && <Loader size="md" />}

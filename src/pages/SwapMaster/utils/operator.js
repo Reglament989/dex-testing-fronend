@@ -6,10 +6,12 @@ import { PixpelSwapDeserializer } from "../../../models/PixpelSwapDeserializer";
 // Constants
 import {
   CIS2_CONTRACT_METHODS,
-  CIS2_MULTI_CONTRACT_INFO,
   PIXPEL_CONTRACT_ADDRESS,
   PIXPEL_CONTRACT_METHODS,
+  PIXPEL_SWAP_CONTRACT_INFO,
 } from "../../../config";
+import { SchemaType } from "@concordium/browser-wallet-api-helpers";
+import PixpelSwapJsonSchema from "../../../config/pixpel_swap_schema.json";
 
 /**
  *
@@ -21,16 +23,28 @@ import {
  * @param {Object} contractAddress Contract Address.
  * @param  {bigint}  contractAddress.index    Contract Address index
  * @param  {bigint}  contractAddress.subindex    Contract Address subindex
+ * @param [contractName] Name of the Contract.
  */
 export const updateOperator = async ({
   provider,
   account,
   tokenAddress,
   contractAddress = PIXPEL_CONTRACT_ADDRESS,
+  contractName,
 }) => {
+  const contractInfo = {
+    ...PIXPEL_SWAP_CONTRACT_INFO,
+    ...(contractName && { contractName }),
+    serializationContractName: PIXPEL_SWAP_CONTRACT_INFO.contractName,
+    schemaWithContext: {
+      type: SchemaType.Parameter,
+      value: PixpelSwapJsonSchema.entrypoints.updateOperator.parameter,
+    },
+  };
+
   const returnedValue = await invokeContract(
     provider,
-    CIS2_MULTI_CONTRACT_INFO,
+    contractInfo,
     toBigIntContractAddress(tokenAddress),
     PIXPEL_CONTRACT_METHODS.operatorOf,
     [
@@ -51,7 +65,7 @@ export const updateOperator = async ({
 
   await updateContract(
     provider,
-    CIS2_MULTI_CONTRACT_INFO,
+    contractInfo,
     [
       {
         operator: {

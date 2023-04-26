@@ -1,4 +1,4 @@
-import { CCD_DECIMALS } from "../config";
+import BigNumber from "bignumber.js";
 
 // parse from string like '<3677,0>'
 export const parseTokenAddress = addressString => {
@@ -10,27 +10,24 @@ export const parseTokenAddress = addressString => {
   };
 };
 
-export const checkIfValidNumber = number => !isNaN(number) && isFinite(number);
+export const checkIfValidBigNumber = bigNumber => {
+  const isBigNumber = bigNumber instanceof BigNumber;
 
-const fixWithControlledRounding = (value, decimals, rounding) => {
-  const factor = 10 ** decimals;
-  const method = rounding === "up" ? "ceil" : "floor";
+  if (!isBigNumber) return false;
 
-  return Math[method](value * factor) / factor;
+  return !bigNumber.isNaN() && bigNumber.isFinite();
 };
 
-export const toFixed = (value, decimals = CCD_DECIMALS, rounding) => {
-  const formattedValue = rounding
-    ? fixWithControlledRounding(value, decimals, rounding)
-    : Number(value.toFixed(decimals));
+export const getTokenRawAmount = (uiAmount, decimals = 6) =>
+  BigNumber(uiAmount).multipliedBy(BigNumber(10).exponentiatedBy(decimals));
 
-  return checkIfValidNumber(formattedValue) ? formattedValue : 0;
+export const getTokenUiAmount = (rawAmount, decimals = 6) => {
+  const uiAmount = rawAmount
+    .dividedBy(BigNumber(10).exponentiatedBy(decimals))
+    .decimalPlaces(decimals);
+
+  return checkIfValidBigNumber(uiAmount) ? uiAmount.toFixed() : "0";
 };
-
-export const getTokenRawAmount = (uiAmount, decimals = 6) => uiAmount * 10 ** decimals;
-
-export const getTokenUiAmount = (rawAmount, decimals = 6) =>
-  toFixed(rawAmount / 10 ** decimals, decimals);
 
 // from BigInt to params format (string)
 export const toParamContractAddress = contractAddress => ({
@@ -43,3 +40,13 @@ export const toBigIntContractAddress = contractAddress => ({
   index: BigInt(contractAddress.index),
   subindex: BigInt(contractAddress.subindex),
 });
+
+export const getShortTokenName = symbol => {
+  if (typeof symbol !== "string") return "";
+
+  if (symbol.length <= 6) return symbol;
+
+  return `${symbol.slice(0, 2)}..${symbol.slice(-2)}`;
+};
+
+export const isHEX = string => /^[0-9A-F]+$/i.test(string);

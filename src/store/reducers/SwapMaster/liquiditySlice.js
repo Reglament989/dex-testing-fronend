@@ -2,10 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Constants
 import { LIQUIDITY_WINDOWS } from "../../../pages/SwapMaster/Liquidity/constants";
-import { TOKEN_LIST } from "../../../config";
 
 const initialState = {
-  tokenTo: TOKEN_LIST[1],
+  tokenTo: {},
   balance: {
     from: 0,
     to: 0,
@@ -19,6 +18,10 @@ const initialState = {
       isOpen: false,
       modalData: {},
     },
+    createToken: {
+      isOpen: false,
+      modalData: {},
+    },
   },
   activeWindow: LIQUIDITY_WINDOWS.pools,
 };
@@ -28,7 +31,7 @@ const liquiditySlice = createSlice({
   initialState,
   reducers: {
     setLiquidityTokenTo: (state, action) => {
-      state.tokenTo = action.payload;
+      state.tokenTo = action.payload || {};
     },
     setLiquidityBalances: (state, action) => {
       const { balanceFrom, balanceTo } = action.payload;
