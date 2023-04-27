@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isTokenListLoaded: false,
+  isExchangesListLoaded: false,
   tokenList: [],
   exchanges: [],
   isNoFilledPools: false,
@@ -13,6 +14,7 @@ const liquiditySlice = createSlice({
   reducers: {
     setExchanges: (state, action) => {
       state.exchanges = action.payload;
+      state.isExchangesListLoaded = true;
     },
     setIsNoFilledPools: (state, action) => {
       state.isNoFilledPools = action.payload;

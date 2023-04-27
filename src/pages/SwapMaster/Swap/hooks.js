@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormContext } from "react-hook-form";
 
 // Utils
 import { getAmount, getFromPerToAmount, getSwapBalances, getToPerFromAmount } from "./utils";
 import { parseTokenAddress } from "../../../utils/format";
-import { setSwapTokens } from "../../../store/reducers/SwapMaster/swapSlice";
 import { isSameToken } from "../utils";
+
+// Actions
+import { setSwapTokens } from "../../../store/reducers/SwapMaster/swapSlice";
 
 // Constants
 import { SWAP_FORM_FIELDS } from "./constants";
@@ -19,46 +21,66 @@ export const useSwapDataUpdate = () => {
     getValues,
     trigger,
     formState: { touchedFields },
+    setError,
+    clearErrors,
   } = useFormContext();
 
   const isAmountLoading = useRef(false);
   const isConnected = useSelector(s => !!s.connect.account);
   const tokenList = useSelector(s => s.swapMaster.tokenList);
   const exchanges = useSelector(s => s.swapMaster.exchanges);
+  const isExchangesListLoaded = useSelector(s => s.swapMaster.isExchangesListLoaded);
   const swapTokenFrom = useSelector(s => s.swap.tokenFrom);
   const swapTokenTo = useSelector(s => s.swap.tokenTo);
   const [fromPerToAmount, setFromPerToAmount] = useState("0");
   const [toPerFromAmount, setToPerFromAmount] = useState("0");
 
-  const filteredTokenList = useMemo(
-    () =>
-      tokenList.filter(({ address, tokenId }) => {
-        const isCCD = !address;
+  const isTokenInExchange = useCallback(
+    tokenData => {
+      const { address, tokenId } = tokenData;
+      const isCCD = !address;
 
-        return (
-          isCCD ||
-          exchanges.some(exchange => {
-            const { index, subindex } = parseTokenAddress(exchange.token.address);
-            const isFilledPool = exchange.ccdBalance > 0 && exchange.tokenBalance > 0;
+      return (
+        isCCD ||
+        exchanges.some(exchange => {
+          const { index, subindex } = parseTokenAddress(exchange.token.address);
+          const isFilledPool = exchange.ccdBalance > 0 && exchange.tokenBalance > 0;
 
-            return (
-              isSameToken(
-                { index: address.index, subindex: address.subindex, tokenId },
-                { index, subindex, tokenId: exchange.token.id },
-              ) && isFilledPool
-            );
-          })
-        );
-      }),
-    [exchanges, tokenList],
+          return (
+            isSameToken(
+              { index: address.index, subindex: address.subindex, tokenId },
+              { index, subindex, tokenId: exchange.token.id },
+            ) && isFilledPool
+          );
+        })
+      );
+    },
+    [exchanges],
   );
 
   useEffect(() => {
+    if (!isExchangesListLoaded) return;
+
+    const isValidPair = isTokenInExchange(swapTokenFrom) && isTokenInExchange(swapTokenTo);
+
+    if (!isValidPair) {
+      setError("InvalidExchange", {
+        type: "custom",
+        message: "Insufficient liquidity for this trade",
+      });
+    } else {
+      clearErrors("InvalidExchange");
+    }
+  }, [isExchangesListLoaded, isTokenInExchange, swapTokenFrom, swapTokenTo, setError, clearErrors]);
+
+  useEffect(() => {
+    const filteredTokenList = tokenList.filter(isTokenInExchange);
+
     if (filteredTokenList.length < 2) return;
 
     // set valid pair tokens
     dispatch(setSwapTokens({ tokenFrom: filteredTokenList[0], tokenTo: filteredTokenList[1] }));
-  }, [dispatch, filteredTokenList]);
+  }, [dispatch, isTokenInExchange, tokenList]);
 
   const handleAmount = useCallback(
     async values => {
@@ -104,7 +126,7 @@ export const useSwapDataUpdate = () => {
       const isAnyFieldTouched = Object.keys(touchedFields).length >= 1;
 
       if (isAnyFieldTouched) {
-        trigger();
+        trigger(Object.values(SWAP_FORM_FIELDS));
       }
     });
   }, [dispatch, isConnected, swapTokenFrom, swapTokenTo, touchedFields, trigger]);
@@ -112,6 +134,6 @@ export const useSwapDataUpdate = () => {
   return {
     fromPerToAmount,
     toPerFromAmount,
-    tokenList: filteredTokenList,
+    tokenList,
   };
 };
