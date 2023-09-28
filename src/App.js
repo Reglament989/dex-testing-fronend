@@ -35,6 +35,9 @@ import {
 } from "./pages/index";
 import { Header, Footer } from "./components";
 import { useWalletConnect } from "./hooks/useWalletConnect";
+import PlayerHeader from "./components/Header/PlayerHeader";
+import PlayerHeaderPixpel from "./components/Header/PlayerHeaderPixpel";
+import DeveloperHeaderPixpel from "./components/Header/DeveloperHeaderPixpel";
 
 function Test() {
   return (
@@ -55,7 +58,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      {/* <Header /> */}
+      {/* <PlayerHeaderPixpel /> */}
+      <DeveloperHeaderPixpel />
+
       <Routes>
         <Route path="/" element={<Navigate to="/swap-master/swap" replace />} />
         {/*<Route path="/nft-market" element={<NFTMarket />} />*/}

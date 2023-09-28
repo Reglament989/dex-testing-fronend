@@ -4,12 +4,17 @@ import Twitter from "../../asssets/images/twitter.svg";
 import Telegram from "../../asssets/images/telegram.svg";
 import Discord from "../../asssets/images/discord.svg";
 import Linkedin from "../../asssets/images/linkedin.svg";
+import logo from "../../asssets/images/logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col bg-app-black 2xl:px-20 xl:px-16 lg:px-12 md:px-9 sm:px-6 px-3 xl:pt-16 lg:pt-12 md:pt-9 sm:pt-6 pt-3 xl:pb-8 lg:pb-6 md:pb-4 pb-3 mt-10">
       <div className="header__logo cursor-pointer xl:mb-12 lg:mb-9 md:mb-6 sm:mb-4 mb-3">
-        <img src="assets/images/logo.svg" className="logo" alt="" />
+        {/* <img src="assets/images/logo.svg" className="logo" alt="" /> */}
+        <img src={logo} alt="logo" onClick={() => navigate("/")} className="cursor-pointer" />
       </div>
       <div className="grid xl1:grid-cols-6 md1:grid-cols-3 2xs:grid-cols-2 grid-cols-1 2xl:mb-20 xl:mb-16 lg:mb-12 md:mb-9 sm:mb-6 mb-3 gap-10">
         <div className="flex flex-col">
