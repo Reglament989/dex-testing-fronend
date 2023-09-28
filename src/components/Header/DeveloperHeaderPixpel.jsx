@@ -99,12 +99,15 @@ const DeveloperHeaderPixpel = () => {
         </div>
       </div>
       {/* <ConnectWalletButton /> */}
-      <div className="hidden lg:flex bg-app-black-button px-10 py-3 rounded-md text-app-blue w-max hover:cursor-pointer items-center">
+      <div
+        className="hidden lg:flex bg-app-black-button px-10 py-3 rounded-md text-app-blue w-max hover:cursor-pointer items-center"
+        onClick={(context.setDeveloper(false), context.setPlayer(true))}
+      >
         Developer
       </div>
       <div className="hidden xl:flex gap-5 items-center">
         <img
-          src={context.developerHeader === 1 ? launchpad : launchpadBlue}
+          src={context.developerHeader === 1 ? launchpadBlue : launchpad}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -113,7 +116,7 @@ const DeveloperHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 2 ? nftfactory : nftfactoryblue}
+          src={context.developerHeader === 2 ? nftfactoryblue : nftfactory}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -122,7 +125,7 @@ const DeveloperHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 3 ? marketplace : marketplaceblue}
+          src={context.developerHeader === 3 ? marketplaceblue : marketplace}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -131,7 +134,7 @@ const DeveloperHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 4 ? gamedashboard : gamedashboardblue}
+          src={context.developerHeader === 4 ? gamedashboardblue : gamedashboard}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -178,20 +181,11 @@ const DeveloperHeaderPixpel = () => {
           <div
             onClick={() => {
               setOpenMenu(false);
-              navigate("/nft-market");
-            }}
-            className="hover:text-app-blue cursor-pointer"
-          >
-            NFT Market
-          </div>
-          <div
-            onClick={() => {
-              setOpenMenu(false);
               navigate("/game-market");
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Game Market
+            Game
           </div>
           <div
             onClick={() => {
@@ -200,7 +194,7 @@ const DeveloperHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Staking
+            Launchpad
           </div>
           <div
             onClick={() => {
@@ -209,7 +203,7 @@ const DeveloperHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Swap
+            DEX
           </div>
           <div
             onClick={() => {
@@ -218,20 +212,12 @@ const DeveloperHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            CEX
+            Wallet
           </div>
-          <div
-            className="w-max cursor-pointer hover:text-app-blue"
-            onClick={() => {
-              setOpenMenu(false);
-              navigate("/buycrypto");
-            }}
-          >
-            Buy Crypto
-          </div>
+
           <div className="flex gap-5">
             <img
-              src={cart}
+              src={launchpad}
               alt="cart"
               onClick={() => {
                 setOpenMenu(false);
@@ -239,7 +225,7 @@ const DeveloperHeaderPixpel = () => {
               }}
             />
             <img
-              src={cart}
+              src={nftfactory}
               alt="cart"
               onClick={() => {
                 setOpenMenu(false);
@@ -247,7 +233,7 @@ const DeveloperHeaderPixpel = () => {
               }}
             />
             <img
-              src={notification}
+              src={marketplace}
               alt="notification"
               onClick={() => {
                 setOpenMenu(false);
@@ -255,7 +241,7 @@ const DeveloperHeaderPixpel = () => {
               }}
             />
             <img
-              src={inventory}
+              src={gamedashboard}
               alt="inventory"
               onClick={() => {
                 setOpenMenu(false);

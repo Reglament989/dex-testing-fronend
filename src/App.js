@@ -38,6 +38,7 @@ import { useWalletConnect } from "./hooks/useWalletConnect";
 import PlayerHeader from "./components/Header/PlayerHeader";
 import PlayerHeaderPixpel from "./components/Header/PlayerHeaderPixpel";
 import DeveloperHeaderPixpel from "./components/Header/DeveloperHeaderPixpel";
+import PixpelHeader from "./components/Header/PixpelHeader";
 
 function Test() {
   return (
@@ -59,8 +60,8 @@ function App() {
   return (
     <div className="App">
       {/* <Header /> */}
-      {/* <PlayerHeaderPixpel /> */}
-      <DeveloperHeaderPixpel />
+      <PixpelHeader />
+      {/* <DeveloperHeaderPixpel /> */}
 
       <Routes>
         <Route path="/" element={<Navigate to="/swap-master/swap" replace />} />

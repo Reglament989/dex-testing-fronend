@@ -13,6 +13,8 @@ const AppContextProvider = ({ children }) => {
   const [orderSellState, setOrderSellState] = useState(0);
   const [developerHeader, setDeveloperHeader] = useState(-1);
   const [playerHeader, setPlayerHeader] = useState(-1);
+  const [player, setPlayer] = useState(true);
+  const [developer, setDeveloper] = useState(false);
 
   return (
     <AppContext.Provider
@@ -35,6 +37,10 @@ const AppContextProvider = ({ children }) => {
         playerHeader,
         setDeveloperHeader,
         setPlayerHeader,
+        developer,
+        setDeveloper,
+        player,
+        setPlayer,
       }}
     >
       {children}

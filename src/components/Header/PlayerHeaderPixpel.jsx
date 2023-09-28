@@ -19,6 +19,7 @@ import launchpad from "../../asssets/images/launchpad.svg";
 import launchpadBlue from "../../asssets/images/launchpad-blue.svg";
 import marketplace from "../../asssets/images/marketplace.svg";
 import marketplaceblue from "../../asssets/images/marketplace-blue.svg";
+//import greendot from "../../asssets/images/greendot";
 // /import ConnectWalletButton from "./ConnectWalletButton/ConnectWalletButton";
 
 const PlayerHeaderPixpel = () => {
@@ -31,7 +32,7 @@ const PlayerHeaderPixpel = () => {
     <div className="bg-app-black flex justify-between px-8 py-5 items-center mb-11">
       <div className="flex flex-row justify-center gap-7 items-center">
         <img src={logo} alt="logo" onClick={() => navigate("/")} className="cursor-pointer" />
-        <div className="hidden xl:flex gap-12 ">
+        <div className="hidden xl:flex gap-6 ">
           {/* <Market />
           <div
             className="relative flex justify-start px-5 border-b-2 border-app-black py-1 hover:text-app-blue"
@@ -43,7 +44,10 @@ const PlayerHeaderPixpel = () => {
             NFT
           </div> */}
           <div
-            className="relative flex justify-start px-5 py-1 hover:text-app-blue cursor-pointer"
+            className={
+              (context.playerHeader === 0 ? "text-app-blue px-5 py-1" : "") +
+              "hover:text-app-blue cursor-pointer px-5 py-1"
+            }
             onClick={async () => {
               navigate("/game-market");
               await context.setPlayerHeader(0);
@@ -53,7 +57,7 @@ const PlayerHeaderPixpel = () => {
           </div>
           <div
             className={
-              (context.developerHeader === 1 ? "text-app-blue px-5 py-1" : "") +
+              (context.playerHeader === 1 ? "text-app-blue px-5 py-1" : "") +
               "hover:text-app-blue cursor-pointer px-5 py-1"
             }
             onClick={async () => {
@@ -65,9 +69,12 @@ const PlayerHeaderPixpel = () => {
           </div>
           {/* <Trade /> */}
           <div
-            className="relative flex justify-start px-5 py-1 hover:text-app-blue"
+            className={
+              (context.playerHeader === 2 ? "text-app-blue  px-5 py-1" : "") +
+              "hover:text-app-blue cursor-pointer w-max  px-5 py-1"
+            }
             onClick={() => {
-              navigate("/exchange");
+              navigate("/swap-master/swap");
               context.setPlayerHeader(2);
             }}
           >
@@ -75,7 +82,7 @@ const PlayerHeaderPixpel = () => {
           </div>
           <div
             className={
-              (context.developerHeader === 3 ? "text-app-blue  px-5 py-1" : "") +
+              (context.playerHeader === 3 ? "text-app-blue  px-5 py-1" : "") +
               "hover:text-app-blue cursor-pointer w-max  px-5 py-1"
             }
             onClick={() => {
@@ -88,12 +95,15 @@ const PlayerHeaderPixpel = () => {
         </div>
       </div>
       {/* <ConnectWalletButton /> */}
-      <div className="hidden lg:flex bg-app-black-button px-14 py-3 rounded-md text-app-blue w-max hover:cursor-pointer items-center">
+      <div
+        className="hidden lg:flex bg-app-black-button px-14 py-3 rounded-md text-app-blue w-max hover:cursor-pointer items-center"
+        onClick={(context.setDeveloper(true), context.setPlayer(false))}
+      >
         Player
       </div>
       <div className="hidden xl:flex gap-5 items-center">
         <img
-          src={context.developerHeader === 4 ? launchpad : launchpadBlue}
+          src={context.playerHeader === 4 ? launchpadBlue : launchpad}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -102,7 +112,7 @@ const PlayerHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 4 ? marketplace : marketplaceblue}
+          src={context.playerHeader === 4 ? marketplaceblue : marketplace}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -111,7 +121,7 @@ const PlayerHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 4 ? cartBlue : cart}
+          src={context.playerHeader === 4 ? cartBlue : cart}
           alt="cart"
           className="cursor-pointer"
           onClick={() => {
@@ -121,7 +131,7 @@ const PlayerHeaderPixpel = () => {
         />
 
         <img
-          src={context.developerHeader === 6 ? inventoryBlue : inventory}
+          src={context.playerHeader === 6 ? inventoryBlue : inventory}
           alt="inventory"
           className="cursor-pointer"
           onClick={() => {
@@ -130,7 +140,7 @@ const PlayerHeaderPixpel = () => {
           }}
         />
         <img
-          src={context.developerHeader === 7 ? walletBlue : wallet}
+          src={context.playerHeader === 7 ? walletBlue : wallet}
           alt="wallet"
           className="cursor-pointer"
           onClick={() => {
@@ -140,7 +150,7 @@ const PlayerHeaderPixpel = () => {
         />
         <Notification />
         <img
-          src={context.developerHeader === 8 ? profileBlue : profile}
+          src={context.playerHeader === 8 ? profileBlue : profile}
           alt="profile"
           className="cursor-pointer"
           onClick={() => {
@@ -168,20 +178,11 @@ const PlayerHeaderPixpel = () => {
           <div
             onClick={() => {
               setOpenMenu(false);
-              navigate("/nft-market");
-            }}
-            className="hover:text-app-blue cursor-pointer"
-          >
-            NFT Market
-          </div>
-          <div
-            onClick={() => {
-              setOpenMenu(false);
               navigate("/game-market");
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Game Market
+            Game
           </div>
           <div
             onClick={() => {
@@ -190,7 +191,7 @@ const PlayerHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Staking
+            Launchpad
           </div>
           <div
             onClick={() => {
@@ -199,7 +200,7 @@ const PlayerHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            Swap
+            DEX
           </div>
           <div
             onClick={() => {
@@ -208,20 +209,20 @@ const PlayerHeaderPixpel = () => {
             }}
             className="hover:text-app-blue cursor-pointer"
           >
-            CEX
+            Wallet
           </div>
-          <div
-            className="w-max cursor-pointer hover:text-app-blue"
-            onClick={() => {
-              setOpenMenu(false);
-              navigate("/buycrypto");
-            }}
-          >
-            Buy Crypto
-          </div>
+
           <div className="flex gap-5">
             <img
-              src={cart}
+              src={launchpad}
+              alt="cart"
+              onClick={() => {
+                setOpenMenu(false);
+                navigate("/nft-market");
+              }}
+            />
+            <img
+              src={marketplace}
               alt="cart"
               onClick={() => {
                 setOpenMenu(false);
@@ -230,14 +231,6 @@ const PlayerHeaderPixpel = () => {
             />
             <img
               src={cart}
-              alt="cart"
-              onClick={() => {
-                setOpenMenu(false);
-                navigate("/nft-market");
-              }}
-            />
-            <img
-              src={notification}
               alt="notification"
               onClick={() => {
                 setOpenMenu(false);
@@ -258,6 +251,14 @@ const PlayerHeaderPixpel = () => {
               onClick={() => {
                 setOpenMenu(false);
                 navigate("/wallet");
+              }}
+            />
+            <img
+              src={notification}
+              alt="notification"
+              onClick={() => {
+                setOpenMenu(false);
+                navigate("/notification");
               }}
             />
             <img
