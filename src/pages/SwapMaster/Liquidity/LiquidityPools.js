@@ -30,21 +30,55 @@ const LiquidityPools = ({ openLiquidityForm }) => {
       openLiquidityForm({ isUnstakeMode, isCreateMode });
     };
 
+  // const handleCreateLiquidity = () => {
+  //   const newExchangeTokenToData = tokenList.find(
+  //     ({ address, tokenId }) =>
+  //       address &&
+  //       exchanges.length &&
+  //       exchanges.every(exchange => {
+  //         const { index, subindex } = parseTokenAddress(exchange.token.address);
+
+  //         return !isSameToken(
+  //           { index: address.index, subindex: address.subindex, tokenId },
+  //           { index, subindex, tokenId: exchange.token.id },
+  //         );
+  //       }),
+  //   );
+
+  //   handleOpenForm(newExchangeTokenToData, false, true)();
+  // };
+
+  // const handleCreateLiquidity = () => {
+  //   const newExchangeTokenToData = tokenList.find(
+  //     ({ address, tokenId }) =>
+  //       address &&
+  //       exchanges.length &&
+  //       exchanges.every(exchange => {
+  //         const { index, subindex } = exchange.token;
+  //         console.log(index, subindex);
+  //         return !isSameToken(
+  //           { index: address.index, subindex: address.subindex, tokenId },
+  //           { index, subindex, tokenId: exchange.token.id },
+  //         );
+  //       }),
+  //   );
+  //   handleOpenForm(newExchangeTokenToData, false, true)();
+  // };
+
   const handleCreateLiquidity = () => {
     const newExchangeTokenToData = tokenList.find(
       ({ address, tokenId }) =>
         address &&
         exchanges.length &&
         exchanges.every(exchange => {
-          const { index, subindex } = parseTokenAddress(exchange.token.address);
-
+          const { index, subindex } = address; // Corrected
+          console.log(index, subindex);
           return !isSameToken(
-            { index: address.index, subindex: address.subindex, tokenId },
-            { index, subindex, tokenId: exchange.token.id },
+            { index: address.index, subindex: address.subindex, tokenId }, // Corrected
+            { index, subindex, tokenId: exchange.tokenId }, // Corrected
           );
         }),
     );
-
     handleOpenForm(newExchangeTokenToData, false, true)();
   };
 
@@ -57,6 +91,7 @@ const LiquidityPools = ({ openLiquidityForm }) => {
       {exchanges.reduce((acc, { token, lpTokensHolderBalance }, i) => {
         const tokenFrom = tokenList[0];
         const tokenTo = tokenList.find(({ address, tokenId }) => {
+          console.log(token);
           const { index, subindex } = parseTokenAddress(token.address);
 
           return (

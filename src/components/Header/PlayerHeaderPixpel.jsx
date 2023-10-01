@@ -19,6 +19,7 @@ import launchpad from "../../asssets/images/launchpad.svg";
 import launchpadBlue from "../../asssets/images/launchpad-blue.svg";
 import marketplace from "../../asssets/images/marketplace.svg";
 import marketplaceblue from "../../asssets/images/marketplace-blue.svg";
+import greendot from "../../asssets/images/greendot.svg";
 //import greendot from "../../asssets/images/greendot";
 // /import ConnectWalletButton from "./ConnectWalletButton/ConnectWalletButton";
 
@@ -26,13 +27,12 @@ const PlayerHeaderPixpel = () => {
   const context = useAppContext();
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
-  context.setPlayerHeader(-1);
 
   return (
     <div className="bg-app-black flex justify-between px-8 py-5 items-center mb-11">
       <div className="flex flex-row justify-center gap-7 items-center">
         <img src={logo} alt="logo" onClick={() => navigate("/")} className="cursor-pointer" />
-        <div className="hidden xl:flex gap-6 ">
+        <div className="hidden xl:flex gap-4 ">
           {/* <Market />
           <div
             className="relative flex justify-start px-5 border-b-2 border-app-black py-1 hover:text-app-blue"
@@ -97,67 +97,147 @@ const PlayerHeaderPixpel = () => {
       {/* <ConnectWalletButton /> */}
       <div
         className="hidden lg:flex bg-app-black-button px-14 py-3 rounded-md text-app-blue w-max hover:cursor-pointer items-center"
-        onClick={(context.setDeveloper(true), context.setPlayer(false))}
+        onClick={() => {
+          context.setPlayer(false);
+        }}
       >
         Player
       </div>
       <div className="hidden xl:flex gap-5 items-center">
-        <img
-          src={context.playerHeader === 4 ? launchpadBlue : launchpad}
-          alt="cart"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/nft-market");
-            context.setPlayerHeader(4);
-          }}
-        />
-        <img
-          src={context.playerHeader === 4 ? marketplaceblue : marketplace}
-          alt="cart"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/nft-market");
-            context.setPlayerHeader(4);
-          }}
-        />
-        <img
-          src={context.playerHeader === 4 ? cartBlue : cart}
-          alt="cart"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/nft-market");
-            context.setPlayerHeader(4);
-          }}
-        />
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 1 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/nft-market");
+              context.setPlayerHeader(1);
+            }}
+          >
+            <img
+              src={context.playerHeader === 1 ? launchpadBlue : launchpad}
+              alt="cart"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
 
-        <img
-          src={context.playerHeader === 6 ? inventoryBlue : inventory}
-          alt="inventory"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/inventory");
-            context.setPlayerHeader(6);
-          }}
-        />
-        <img
-          src={context.playerHeader === 7 ? walletBlue : wallet}
-          alt="wallet"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/wallet");
-            context.setPlayerHeader(7);
-          }}
-        />
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 2 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className="w-8 h-8 cursor-pointer"
+            onClick={() => {
+              navigate("/nft-market");
+              context.setPlayerHeader(2);
+            }}
+          >
+            <img
+              src={context.playerHeader === 2 ? marketplaceblue : marketplace}
+              alt="cart"
+              className="w-full h-full"
+            />
+          </div>
+        </div>
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 3 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/nft-market");
+              context.setPlayerHeader(3);
+            }}
+          >
+            <img
+              src={context.playerHeader === 3 ? cartBlue : cart}
+              alt="cart"
+              className="cursor-pointer"
+              onClick={() => {
+                navigate("/nft-market");
+                context.setPlayerHeader(3);
+              }}
+            />
+          </div>
+        </div>
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 4 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/inventory");
+              context.setPlayerHeader(4);
+            }}
+          >
+            <img
+              src={context.playerHeader === 4 ? inventoryBlue : inventory}
+              alt="inventory"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 5 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/wallet");
+              context.setPlayerHeader(5);
+            }}
+          >
+            <img
+              src={context.playerHeader === 5 ? walletBlue : wallet}
+              alt="wallet"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
+
         <Notification />
-        <img
-          src={context.playerHeader === 8 ? profileBlue : profile}
-          alt="profile"
-          className="cursor-pointer"
-          onClick={() => {
-            navigate("/profile");
-            context.setPlayerHeader(8);
-          }}
-        />
+
+        <div className="relative inline-flex flex-col items-start ">
+          {context.playerHeader === 6 && (
+            <div
+              className="w-2 h-2 bg-green-500 rounded-full -mt-[10px] mb-1"
+              style={{ zIndex: 1 }}
+            />
+          )}
+          <div
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/profile");
+              context.setPlayerHeader(6);
+            }}
+          >
+            <img
+              src={context.playerHeader === 6 ? profileBlue : profile}
+              alt="profile"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
       </div>
       <div className="xl:hidden flex" onClick={() => setOpenMenu(!openMenu)}>
         <img src={Iconmenu} alt="menu" />

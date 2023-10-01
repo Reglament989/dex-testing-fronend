@@ -16,19 +16,40 @@ import { setLiquidityActiveWindow } from "../../store/reducers/SwapMaster/liquid
 
 // Constants
 import { LIQUIDITY_WINDOWS } from "./Liquidity/constants";
+import Limit from "./Limit";
+import Pool from "./pool";
+import Bridge from "./Bridge/Bridge";
 
 const buttonList = [
   {
     id: 1,
-    title: "Market",
+    title: "MARKET",
     buttonStyle: "w-33 xs:h-14 h-10 1xs:px-0 px-2",
     path: "swap",
   },
   {
+    id: 2,
+    title: "LIMIT",
+    buttonStyle: "w-36 xs:h-14 h-10 1xs:px-0 px-2",
+    path: "limit",
+  },
+  {
     id: 3,
-    title: "Liquidity",
+    title: "LIQUIDITY",
     buttonStyle: "w-36 xs:h-14 h-10 1xs:px-0 px-2",
     path: "liquidity",
+  },
+  {
+    id: 4,
+    title: "POOL",
+    buttonStyle: "w-36 xs:h-14 h-10 1xs:px-0 px-2",
+    path: "pool",
+  },
+  {
+    id: 5,
+    title: "BRIDGE",
+    buttonStyle: "w-36 xs:h-14 h-10 1xs:px-0 px-2",
+    path: "bridge",
   },
 ];
 
@@ -48,12 +69,13 @@ const SwapMaster = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center py-12" style={{ fontFamily: "Poppins" }}>
+      <div
+        className="flex flex-col items-center py-12"
+        style={{ fontFamily: "Poppins,sans-serif" }}
+      >
         <div className="flex flex-row items-center justify-around w-full mb-5">
           <div
-            className={`flex items-center justify-center w-12 h-12 rounded-lg bg-app-black-button hover:bg-app-blue cursor-pointer ${
-              isLiquidityTab ? "" : "opacity-50 pointer-events-none"
-            }`}
+            className={`flex items-center justify-center w-12 h-12 rounded-lg bg-app-black-button hover:bg-app-blue cursor-pointer `}
             onClick={handleClickArrow}
           >
             <svg
@@ -73,7 +95,7 @@ const SwapMaster = () => {
               <line x1="5" y1="12" x2="11" y2="6" />
             </svg>
           </div>
-          <div className="text-2xl  2xs:text-3xl 1xs:text-[40px]">Swap Master</div>
+          <div className="text-3xl  2xs:text-4xl 1xs:text-[40px] font-semibold">Swap Master</div>
           <div className="w-12 h-12"></div>
         </div>
         <div className="flex flex-row justify-center w-full gap-5 mb-12 xs:font-semibold xs:text-lg px-28">
@@ -95,6 +117,9 @@ const SwapMaster = () => {
               <Route index element={<Navigate to="swap" replace />} />
               <Route path="swap" element={<Swap />} />
               <Route path="liquidity" element={<Liquidity />} />
+              <Route path="limit" element={<Limit />} />
+              <Route path="pool" element={<Pool />} />
+              <Route path="bridge" element={<Bridge />} />
             </Routes>
           </div>
         </div>

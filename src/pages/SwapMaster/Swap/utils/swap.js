@@ -43,13 +43,13 @@ const swapTokenToCcd = async ({ tokenData, amountFrom, amountTo, provider, accou
 
 const swapCcdToToken = async ({ tokenData, amountFrom, amountTo, provider, account }) => {
   const { address, decimals, tokenId } = tokenData;
-
+  console.log(decimals);
   return updateContract(
     provider,
     PIXPEL_SWAP_CONTRACT_INFO,
     {
       token: { address, id: tokenId },
-      min_token_amount: getTokenRawAmount(amountTo, decimals).toString(),
+      min_token_amount: getTokenRawAmount(amountTo, decimals || 6).toString(),
     },
     account,
     PIXPEL_CONTRACT_ADDRESS,
@@ -80,8 +80,8 @@ const swapTokenToToken = async ({
     {
       token: { address: tokenFrom.address, id: tokenFrom.tokenId },
       purchased_token: { address: tokenTo.address, id: tokenTo.tokenId },
-      token_sold: getTokenRawAmount(amountFrom, tokenFrom.decimals).toString(),
-      min_purchased_token_amount: getTokenRawAmount(amountTo, tokenTo.decimals).toString(),
+      token_sold: getTokenRawAmount(amountFrom, tokenFrom.decimals || 6).toString(),
+      min_purchased_token_amount: getTokenRawAmount(amountTo, tokenTo.decimals || 6).toString(),
     },
     account,
     PIXPEL_CONTRACT_ADDRESS,

@@ -1,18 +1,12 @@
 import React from "react";
 import PlayerHeaderPixpel from "./PlayerHeaderPixpel";
-//import DeveloperHeaderPixpel from "./DeveloperHeaderPixpel";
-//import { useAppContext } from "../../contexts/AppContext";
+import DeveloperHeaderPixpel from "./DeveloperHeaderPixpel";
+import { useAppContext } from "../../contexts/AppContext";
 
 function PixpelHeader() {
-  // const context = useAppContext();
+  const context = useAppContext();
 
-  return (
-    <div>
-      {/* {context.player ? <PlayerHeaderPixpel /> : <DeveloperHeaderPixpel />} */}
-      <PlayerHeaderPixpel />
-      {/* {<DeveloperHeaderPixpel />} */}
-    </div>
-  );
+  return <div>{context.player ? <PlayerHeaderPixpel /> : <DeveloperHeaderPixpel />}</div>;
 }
 
 export default PixpelHeader;

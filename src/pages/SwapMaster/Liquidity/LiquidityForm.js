@@ -68,6 +68,12 @@ const LiquidityForm = ({ isUnstakeMode, isCreateMode }) => {
 
   const values = watch();
   const isFilledPool = exchangeData?.ccdBalance > 0 && exchangeData?.tokenBalance > 0;
+  console.log({
+    values,
+    exchangeData: isFilledPool && exchangeData,
+    tokenFrom,
+    tokenTo,
+  });
   const fromPerToAmount = getFromPerToAmount({
     values,
     exchangeData: isFilledPool && exchangeData,
@@ -231,7 +237,7 @@ const LiquidityForm = ({ isUnstakeMode, isCreateMode }) => {
       </div>
       <MainButton
         type="submit"
-        className="p-4 h-16 mt-5 bg-app-blue text-lg disabled:bg-app-black-button"
+        className="p-4 h-16 mt-5 bg-app-blue text-lg disabled:bg-app-black-button hover:bg-[#50D0FB] "
         disabled={!!errorMessage || isSubmitting}
         form={LIQUIDITY_FORM_ID}
       >

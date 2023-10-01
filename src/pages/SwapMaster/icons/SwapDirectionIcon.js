@@ -2,7 +2,7 @@ import React from "react";
 
 export const SwapDirectionIcon = () => (
   <svg
-    className="w-10 h-10 text-white-800"
+    className="w-10 h-10 text-white-800 "
     width="24"
     height="24"
     viewBox="0 0 24 24"

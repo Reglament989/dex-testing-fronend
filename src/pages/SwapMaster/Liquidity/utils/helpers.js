@@ -13,12 +13,12 @@ import { CCD_DECIMALS } from "../../../../config";
 export const getFromPerToAmount = ({ values, exchangeData, tokenFrom, tokenTo }) => {
   const fromAmount = BigNumber(
     exchangeData
-      ? getTokenUiAmount(BigNumber(exchangeData.ccdBalance), tokenFrom.decimals)
+      ? getTokenUiAmount(BigNumber(exchangeData.ccdBalance), tokenFrom.decimals || 6)
       : values.from,
   );
   const toAmount = BigNumber(
     exchangeData
-      ? getTokenUiAmount(BigNumber(exchangeData.tokenBalance), tokenTo.decimals)
+      ? getTokenUiAmount(BigNumber(exchangeData.tokenBalance), tokenTo.decimals || 6)
       : values.to,
   );
   const result = fromAmount.dividedBy(toAmount).decimalPlaces(CCD_DECIMALS);
@@ -29,15 +29,15 @@ export const getFromPerToAmount = ({ values, exchangeData, tokenFrom, tokenTo })
 export const getToPerFromAmount = ({ values, exchangeData, tokenFrom, tokenTo }) => {
   const fromAmount = BigNumber(
     exchangeData
-      ? getTokenUiAmount(BigNumber(exchangeData.ccdBalance), tokenFrom.decimals)
+      ? getTokenUiAmount(BigNumber(exchangeData.ccdBalance), tokenFrom.decimals || 6)
       : values.from,
   );
   const toAmount = BigNumber(
     exchangeData
-      ? getTokenUiAmount(BigNumber(exchangeData.tokenBalance), tokenTo.decimals)
+      ? getTokenUiAmount(BigNumber(exchangeData.tokenBalance), tokenTo.decimals || 6)
       : values.to,
   );
-  const result = toAmount.dividedBy(fromAmount).decimalPlaces(tokenTo.decimals);
+  const result = toAmount.dividedBy(fromAmount).decimalPlaces(tokenTo.decimals || 6);
 
   return checkIfValidBigNumber(result) ? result.toFixed() : "0";
 };

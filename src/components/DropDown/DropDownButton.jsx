@@ -33,11 +33,11 @@ const DropDownButton = ({ initialContent, contentList, fontSize, textColor, back
         className={"cursor-pointer " + bgColor + (showDropDown ? " rounded-t" : " rounded")}
         onClick={handleDropDown}
       >
-        <div className="flex px-6 rounded-xl gap-3 items-center justify-between py-4">
+        <div className="flex px-10 rounded-xl gap-3 items-center justify-between py-4">
           <div className={font + " font-medium " + textColor}>{selectedContent}</div>
           <div className="flex">
             <svg
-              className="w-7 h-7 text-gray-700"
+              className="w-full h-7 text-gray-700 scroll-m-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

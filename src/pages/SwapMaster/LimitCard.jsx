@@ -1,59 +1,86 @@
 import React, { useState } from "react";
 import ImageDropDownButton from "../../components/DropDown/ImageDropDownButton";
 import DropdownButton from "../../components/DropDown/DropDownButton";
+import { SwapDirectionIcon } from "./icons/SwapDirectionIcon";
+import concodium from "../../asssets/images/concordium-icon.svg";
+import ethereum from "../../asssets/images/ethereum-icon.svg";
 
 const currencyList = [
   {
     id: 1,
-    title: "USDT",
+    title: "Day 1",
   },
   {
-    id: 1,
-    title: "USDT",
+    id: 2,
+    title: "Day 2",
   },
   {
-    id: 1,
-    title: "USDT",
+    id: 3,
+    title: "Day 3",
   },
   {
-    id: 1,
-    title: "USDT",
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
+  },
+  {
+    id: 4,
+    title: "Day 4",
   },
 ];
 const fromTokenList = [
   {
     id: 1,
-    title: "USDT",
-    url: "../../assets/images/UserHome/bnb.png",
+    title: "CCD",
+    url: concodium,
   },
   {
     id: 2,
-    title: "USDT",
-    url: "../../assets/images/UserHome/bnb.png",
+    title: "KAVA",
+    url: ethereum,
   },
-  {
-    id: 3,
-    title: "USDT",
-    url: "../../assets/images/UserHome/bnb.png",
-  },
+  // {
+  //   id: 3,
+  //   title: "BTC",
+  //   url: "../../assets/images/UserHome/bnb.png",
+  // },
 ];
 
 const toTokenList = [
   {
     id: 1,
-    title: "BTC",
-    url: "../../assets/images/UserHome/bnb.png",
+    title: "KAVA",
+    url: ethereum,
   },
   {
     id: 2,
-    title: "BTC",
-    url: "../../assets/images/UserHome/bnb.png",
+    title: "CCD",
+    url: concodium,
   },
-  {
-    id: 3,
-    title: "BTC",
-    url: "../../assets/images/UserHome/bnb.png",
-  },
+  // {
+  //   id: 3,
+  //   title: "BTC",
+  //   url: "../../assets/images/UserHome/bnb.png",
+  // },
 ];
 
 const LimitCard = () => {
@@ -105,7 +132,7 @@ const LimitCard = () => {
         </div>
         <div className="flex flex-col pb-10 border-b-2 border-app-block">
           <div className="flex flex-row justify-start gap-2 mt-5">
-            <div className="w-2/3">price</div>
+            <div className="text-lg w-2/3">Price</div>
             <div className="w-1/3">Expires in</div>
           </div>
           <div className="flex flex-col justify-start gap-2 mt-3 sm:flex-row">
@@ -113,14 +140,15 @@ const LimitCard = () => {
               <div className="w-3/4">
                 <input className="w-full bg-app-black-button" />
               </div>
-              <DropdownButton
-                initialContent={currencyList[0].symbol}
-                backgroundColor="bg-app-black-button"
-                contentList={currencyList}
-              />
+              <div className="flex-none">
+                <ImageDropDownButton
+                  initialContent={convert ? toTokenList[0] : fromTokenList[0]}
+                  contentList={convert ? toTokenList : fromTokenList}
+                  backgroundColor=" bg-app-black-button"
+                />
+              </div>
             </div>
-            <div className="flex flex-row items-center justify-between w-1/3 h-16 py-5 pl-5 rounded-lg bg-app-black-button">
-              <div className="text-base">1day</div>
+            <div className="flex flex-row items-center  w-1/3 h-16 py-5 pl-5 rounded-lg bg-app-black-button justify-end">
               <DropdownButton
                 initialContent={currencyList[0].symbol}
                 backgroundColor="bg-app-black-button"
@@ -131,27 +159,11 @@ const LimitCard = () => {
         </div>
         <div className="flex justify-center w-full -mt-6">
           <div
-            className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button"
+            className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button hover:bg-[#717A8B]"
+            style={{ marginBottom: "10px", width: "53px", height: "53px" }}
             onClick={handleConvert}
           >
-            <svg
-              className="w-12 h-12 text-white-800"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <polyline points="15 4 19 4 19 8" />
-              <line x1="14.75" y1="9.25" x2="19" y2="4" />
-              <line x1="5" y1="19" x2="9" y2="15" />
-              <polyline points="15 19 19 19 19 15" />
-              <line x1="5" y1="5" x2="19" y2="19" />
-            </svg>
+            <SwapDirectionIcon />
           </div>
         </div>
         <div className="flex flex-row justify-between">
@@ -180,7 +192,7 @@ const LimitCard = () => {
           <div>Inverse Price</div>
           <div>1 USDT = 0.000002433 BTC</div>
         </div>
-        <div className="flex items-center justify-center h-16 mt-5 rounded-md cursor-pointer bg-app-blue hover:bg-app-blue">
+        <div className="flex items-center justify-center h-16 mt-5 rounded-md cursor-pointer bg-app-blue hover:bg-[#50D0FB]">
           <div className="text-lg">Place Older</div>
         </div>
       </div>

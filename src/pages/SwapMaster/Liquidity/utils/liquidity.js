@@ -33,6 +33,7 @@ export const addLiquidity =
     const account = getState().connect.account;
     const provider = getState().connect.provider;
     const tokenTo = getState().liquidity.tokenTo;
+    console.log(provider, account, tokenTo);
 
     await updateOperator({
       provider,
@@ -41,12 +42,25 @@ export const addLiquidity =
       contractName: tokenTo.contractName,
     });
 
+    console.log(
+      provider,
+      PIXPEL_SWAP_CONTRACT_INFO,
+      {
+        token: { address: tokenTo.address, id: tokenTo.tokenId },
+        token_amount: getTokenRawAmount(values.to, tokenTo.decimals || 6).toString(),
+      },
+      account,
+      PIXPEL_CONTRACT_ADDRESS,
+      PIXPEL_CONTRACT_METHODS.addLiquidity,
+      MAX_ENERGY,
+      values.from,
+    );
     await updateContract(
       provider,
       PIXPEL_SWAP_CONTRACT_INFO,
       {
         token: { address: tokenTo.address, id: tokenTo.tokenId },
-        token_amount: getTokenRawAmount(values.to, tokenTo.decimals).toString(),
+        token_amount: getTokenRawAmount(values.to, tokenTo.decimals || 6).toString(),
       },
       account,
       PIXPEL_CONTRACT_ADDRESS,

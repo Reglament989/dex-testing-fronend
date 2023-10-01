@@ -95,7 +95,7 @@ const SwapForm = () => {
       />
       <div className="flex justify-center w-full mt-5">
         <div
-          className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button"
+          className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button hover:bg-[#717A8B]"
           style={{ marginBottom: "10px", width: "53px", height: "53px" }}
           onClick={handleSwapDirection}
           title="Revert swap direction"
@@ -143,7 +143,7 @@ const SwapForm = () => {
       <MainButton
         type="submit"
         disabled={!!errorMessage || isSubmitting}
-        className="p-4 h-16 mt-5 bg-app-blue text-lg disabled:bg-app-black-button"
+        className="p-4 h-16 mt-5 bg-app-blue text-lg disabled:bg-app-black-button hover:bg-[#50D0FB] "
       >
         {capitalizeString(errorMessage) || "Confirm"}
       </MainButton>
