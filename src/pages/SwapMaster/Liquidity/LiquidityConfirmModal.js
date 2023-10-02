@@ -127,7 +127,7 @@ const LiquidityConfirmModal = () => {
           </div>
           <MainButton
             disabled={isProcessing}
-            className="flex items-center justify-center rounded-md cursor-pointer h-14 bg-app-green hover:bg-app-green disabled:cursor-wait"
+            className="flex items-center justify-center rounded-md cursor-pointer h-14 bg-app-green hover:bg-[#1FF19F] disabled:cursor-wait"
             onClick={onConfirm}
           >
             {isProcessing && <Loader size="md" />}

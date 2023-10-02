@@ -4,47 +4,33 @@ import DropdownButton from "../../components/DropDown/DropDownButton";
 import { SwapDirectionIcon } from "./icons/SwapDirectionIcon";
 import concodium from "../../asssets/images/concordium-icon.svg";
 import ethereum from "../../asssets/images/ethereum-icon.svg";
+import { changeSwapDirection } from "./Swap/utils";
+import { useDispatch, useSelector } from "react-redux";
 
 const currencyList = [
   {
     id: 1,
-    title: "Day 1",
+    title: "1 hour",
   },
   {
     id: 2,
-    title: "Day 2",
+    title: "5 hours",
   },
   {
     id: 3,
-    title: "Day 3",
+    title: "15 hours",
   },
   {
     id: 4,
-    title: "Day 4",
+    title: "1 day",
   },
   {
-    id: 4,
-    title: "Day 4",
+    id: 5,
+    title: "3 days",
   },
   {
-    id: 4,
-    title: "Day 4",
-  },
-  {
-    id: 4,
-    title: "Day 4",
-  },
-  {
-    id: 4,
-    title: "Day 4",
-  },
-  {
-    id: 4,
-    title: "Day 4",
-  },
-  {
-    id: 4,
-    title: "Day 4",
+    id: 6,
+    title: "5 days",
   },
 ];
 const fromTokenList = [
@@ -84,10 +70,15 @@ const toTokenList = [
 ];
 
 const LimitCard = () => {
-  const [convert, setConvert] = useState(false);
+  const [convert, setConvert] = useState();
+  const dispatch = useDispatch();
 
   const handleConvert = () => {
     setConvert(!convert);
+  };
+
+  const handleSwapDirection = () => {
+    dispatch(changeSwapDirection());
   };
 
   return (
@@ -96,7 +87,7 @@ const LimitCard = () => {
         <div className="flex flex-col justify-between 2xs:flex-row">
           <div className="text-lg font-semibold ">From</div>
           <div className="flex flex-row items-center text-gray-600">
-            <div className="text-xs">Spot wallet available</div>
+            <div className="text-xs text-gray-500">Spot wallet available</div>
             <svg
               className="w-3 h-3 text-gray-500"
               width="24"
@@ -111,7 +102,7 @@ const LimitCard = () => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="6 9 12 15 18 9" />
             </svg>
-            <div className="text-xs">0 USDT</div>
+            <div className="text-xs text-gray-500">0 USDT</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between h-16 py-3 pl-4 mt-3 rounded-lg xs:pl-8 bg-app-black-button">
@@ -125,12 +116,12 @@ const LimitCard = () => {
           <div className="flex-none">
             <ImageDropDownButton
               initialContent={convert ? toTokenList[0] : fromTokenList[0]}
-              contentList={convert ? toTokenList : fromTokenList}
+              contentList={!convert ? toTokenList : fromTokenList}
               backgroundColor=" bg-app-black-button"
             />
           </div>
         </div>
-        <div className="flex flex-col pb-10 border-b-2 border-app-block">
+        <div className="flex flex-col pb-10 border-b-2 border-app-block border-b-gray-700">
           <div className="flex flex-row justify-start gap-2 mt-5">
             <div className="text-lg w-2/3">Price</div>
             <div className="w-1/3">Expires in</div>
@@ -143,7 +134,7 @@ const LimitCard = () => {
               <div className="flex-none">
                 <ImageDropDownButton
                   initialContent={convert ? toTokenList[0] : fromTokenList[0]}
-                  contentList={convert ? toTokenList : fromTokenList}
+                  contentList={!convert ? toTokenList : fromTokenList}
                   backgroundColor=" bg-app-black-button"
                 />
               </div>
@@ -159,9 +150,12 @@ const LimitCard = () => {
         </div>
         <div className="flex justify-center w-full -mt-6">
           <div
-            className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button hover:bg-[#717A8B]"
+            className="flex items-center justify-center rounded-full cursor-pointer full bg-app-black-button hover:bg-[#717A8B] rotate-90"
             style={{ marginBottom: "10px", width: "53px", height: "53px" }}
-            onClick={handleConvert}
+            onClick={() => {
+              handleSwapDirection();
+              handleConvert();
+            }}
           >
             <SwapDirectionIcon />
           </div>
@@ -179,7 +173,7 @@ const LimitCard = () => {
           <div className="flex-none">
             <ImageDropDownButton
               initialContent={convert ? fromTokenList[0] : toTokenList[0]}
-              contentList={convert ? fromTokenList : toTokenList}
+              contentList={!convert ? fromTokenList : toTokenList}
               backgroundColor=" bg-app-black-button"
             />
           </div>

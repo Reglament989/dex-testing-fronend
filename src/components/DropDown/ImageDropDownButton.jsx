@@ -65,6 +65,9 @@ const ImageDropDownButton = props => {
                   >
                     <img className="h-7" src={content.url} alt="" />
                     <div className="text-base font-medium hover:text-app-blue">{content.title}</div>
+                    {idx !== props.contentList.length - 1 && (
+                      <div className="absolute left-0 right-0 bottom-0 h-1 bg-[#717A8B] rounded-b-lg"></div>
+                    )}
                   </div>
                 );
               })}

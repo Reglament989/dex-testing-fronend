@@ -19,7 +19,7 @@ import launchpad from "../../asssets/images/launchpad.svg";
 import launchpadBlue from "../../asssets/images/launchpad-blue.svg";
 import marketplace from "../../asssets/images/marketplace.svg";
 import marketplaceblue from "../../asssets/images/marketplace-blue.svg";
-import greendot from "../../asssets/images/greendot.svg";
+//import greendot from "../../asssets/images/greendot.svg";
 //import greendot from "../../asssets/images/greendot";
 // /import ConnectWalletButton from "./ConnectWalletButton/ConnectWalletButton";
 

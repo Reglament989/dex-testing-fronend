@@ -33,7 +33,7 @@ const DropDownButton = ({ initialContent, contentList, fontSize, textColor, back
         className={"cursor-pointer " + bgColor + (showDropDown ? " rounded-t" : " rounded")}
         onClick={handleDropDown}
       >
-        <div className="flex px-10 rounded-xl gap-3 items-center justify-between py-4">
+        <div className="flex px-1 rounded-xl gap-[100px] items-end justify-between py-4">
           <div className={font + " font-medium " + textColor}>{selectedContent}</div>
           <div className="flex">
             <svg
@@ -55,12 +55,12 @@ const DropDownButton = ({ initialContent, contentList, fontSize, textColor, back
           {showDropDown === true ? (
             <div className="absolute inset-0 z-10">
               <div className="fixed inset-0 w-full h-full" onClick={handleDropDown}></div>
-              <div className={bgColor + " flex flex-col rounded-b-xl"}>
+              <div className={bgColor + " flex flex-col rounded-b-xl  overflow-y-scroll max-h-44"}>
                 {contentList.map((content, idx) => {
                   return (
                     <div
                       key={idx}
-                      className="relative flex justify-start px-8 py-5"
+                      className="relative flex justify-start px-5 py-5"
                       onClick={() => {
                         selectHandleClick(content.title);
                       }}
@@ -68,6 +68,9 @@ const DropDownButton = ({ initialContent, contentList, fontSize, textColor, back
                       <div className={"text-base font-medium hover:text-app-blue " + textColor}>
                         {content.title}
                       </div>
+                      {idx !== contentList.length - 1 && (
+                        <div className="absolute left-0 right-0 bottom-0 h-1 bg-[#717A8B] rounded-b-lg"></div>
+                      )}
                     </div>
                   );
                 })}

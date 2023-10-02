@@ -140,6 +140,24 @@ const SwapForm = () => {
       <div className="mt-2">
         <div className="text-sm text-slate-400">Please confirm conversion within the time.</div>
       </div>
+      <div className="my-5 bg-white/10 rounded-md p-5">1 AVA = 0.3371245 PIXP</div>
+      <div className="flex flex-row justify-between">
+        <div>Pool Fee</div>
+        <div>0.01%</div>
+      </div>
+      <div className="flex flex-row justify-between">
+        <div>Price Impact </div>
+        <div>0.23%</div>
+      </div>
+      <div className="flex flex-row items-center justify-between mb-4">
+        <div>Receive at least</div>
+        <div className="text-2xl text-app-blue">28.65558 PIXP.USDT</div>
+      </div>
+      <div className="flex flex-row items-center justify-between mb-4">
+        <div>Estimated NRG Fee</div>
+        <div className="text-2xl text-app-blue">80.35691 CCD</div>
+      </div>
+
       <MainButton
         type="submit"
         disabled={!!errorMessage || isSubmitting}
