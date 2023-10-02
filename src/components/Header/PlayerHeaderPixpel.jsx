@@ -285,7 +285,7 @@ const PlayerHeaderPixpel = () => {
           <div
             onClick={() => {
               setOpenMenu(false);
-              navigate("/exchange");
+              navigate("/swap-master/swap");
             }}
             className="hover:text-app-blue cursor-pointer"
           >

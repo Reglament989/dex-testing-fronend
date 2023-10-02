@@ -77,7 +77,7 @@ const DeveloperHeaderPixpel = () => {
               "hover:text-app-blue cursor-pointer px-5 py-1"
             }
             onClick={() => {
-              navigate("/exchange");
+              navigate("/swap-master/swap");
               context.setDeveloperHeader(2);
             }}
           >
@@ -286,7 +286,7 @@ const DeveloperHeaderPixpel = () => {
           <div
             onClick={() => {
               setOpenMenu(false);
-              navigate("/swap-master");
+              navigate("/swap-master/swap");
             }}
             className="hover:text-app-blue cursor-pointer"
           >
